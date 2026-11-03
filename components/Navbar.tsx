@@ -4,6 +4,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
+import ThemeToggle from "@/components/ThemeToggle";
 
 const links = [
   { href: "/", label: "Нүүр" },
@@ -51,38 +52,43 @@ export default function Navbar() {
           />
         </Link>
 
-        {/* Компьютер дээрх цэс */}
-        <ul className="hidden items-center gap-8 md:flex">
-          {links.map((link) => (
-            <li key={link.href}>
-              <Link
-                href={link.href}
-                className={`group relative text-sm font-medium transition hover:text-white ${
-                  isActive(link.href) ? "text-white" : "text-purple-200"
-                }`}
-              >
-                {link.label}
-                <span
-                  className={`absolute -bottom-1 left-0 h-0.5 bg-[#9440C4] transition-all duration-300 group-hover:w-full ${
-                    isActive(link.href) ? "w-full" : "w-0"
+        <div className="flex items-center gap-4">
+          {/* Компьютер дээрх цэс */}
+          <ul className="hidden items-center gap-8 md:flex">
+            {links.map((link) => (
+              <li key={link.href}>
+                <Link
+                  href={link.href}
+                  className={`group relative text-sm font-medium transition hover:text-white ${
+                    isActive(link.href) ? "text-white" : "text-purple-200"
                   }`}
-                />
-              </Link>
-            </li>
-          ))}
-        </ul>
+                >
+                  {link.label}
+                  <span
+                    className={`absolute -bottom-1 left-0 h-0.5 bg-[#9440C4] transition-all duration-300 group-hover:w-full ${
+                      isActive(link.href) ? "w-full" : "w-0"
+                    }`}
+                  />
+                </Link>
+              </li>
+            ))}
+          </ul>
 
-        {/* Утасны цэсний товч */}
-        <button
-          onClick={() => setOpen(!open)}
-          aria-label="Цэс нээх"
-          aria-expanded={open}
-          className="flex h-10 w-10 flex-col items-center justify-center gap-1.5 md:hidden"
-        >
-          <span className={`h-0.5 w-6 bg-white transition duration-300 ${open ? "translate-y-2 rotate-45" : ""}`} />
-          <span className={`h-0.5 w-6 bg-white transition duration-300 ${open ? "opacity-0" : ""}`} />
-          <span className={`h-0.5 w-6 bg-white transition duration-300 ${open ? "-translate-y-2 -rotate-45" : ""}`} />
-        </button>
+          {/* Харанхуй / цайвар горим */}
+          <ThemeToggle />
+
+          {/* Утасны цэсний товч */}
+          <button
+            onClick={() => setOpen(!open)}
+            aria-label="Цэс нээх"
+            aria-expanded={open}
+            className="flex h-10 w-10 flex-col items-center justify-center gap-1.5 md:hidden"
+          >
+            <span className={`h-0.5 w-6 bg-white transition duration-300 ${open ? "translate-y-2 rotate-45" : ""}`} />
+            <span className={`h-0.5 w-6 bg-white transition duration-300 ${open ? "opacity-0" : ""}`} />
+            <span className={`h-0.5 w-6 bg-white transition duration-300 ${open ? "-translate-y-2 -rotate-45" : ""}`} />
+          </button>
+        </div>
       </nav>
 
       {/* Утасны цэс */}

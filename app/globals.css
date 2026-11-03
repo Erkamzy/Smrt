@@ -146,3 +146,57 @@ html {
     animation: none;
   }
 }
+/* ===== Цайвар горим ===== */
+
+/* Дэвсгэр градиент */
+.light .from-\[\#1a0b3d\] { --tw-gradient-from: #f7f2ff; }
+.light .via-\[\#2E1A66\]  { --tw-gradient-via: #ebe0ff; }
+.light .to-\[\#1a0b3d\]   { --tw-gradient-to: #f7f2ff; }
+
+/* Үндсэн текст */
+.light main { color: #1f1147; }
+
+/* Бүдэг текстүүд */
+.light .text-purple-50\/90,
+.light .text-purple-100,
+.light .text-purple-100\/80,
+.light .text-purple-100\/90,
+.light .text-purple-200,
+.light .text-purple-200\/70,
+.light .text-purple-200\/80 { color: #4c3a7a; }
+
+/* Линк */
+.light .text-purple-300 { color: #7b2fa8; }
+.light .hover\:text-purple-200:hover { color: #5b1d85; }
+.light .hover\:text-white:hover { color: #1f1147; }
+
+/* Ягаан дэвсгэртэй зүйл дээрх текст цагаан хэвээр (шошго, товч) */
+.light .bg-\[\#7B2FA8\] { color: #fff; }
+
+/* Картууд, товчнууд */
+.light .bg-white\/10 { background-color: rgba(123, 47, 168, 0.08); }
+.light .hover\:bg-white\/10:hover,
+.light .hover\:bg-white\/15:hover,
+.light .hover\:bg-white\/20:hover,
+.light .group:hover .group-hover\:bg-white\/15 {
+  background-color: rgba(123, 47, 168, 0.14);
+}
+.light .ring-white\/10 { --tw-ring-color: rgba(123, 47, 168, 0.2); }
+.light .border-white\/10 { border-color: rgba(123, 47, 168, 0.2); }
+
+/* Navbar */
+.light .bg-\[\#1a0b3d\]\/80 { background-color: rgba(255, 255, 255, 0.85); }
+.light header .text-white { color: #1f1147; }
+.light header button span { background-color: #1f1147; }
+
+/* Footer */
+.light .bg-\[\#12072b\] { background-color: #ebe0ff; }
+
+/* Гарчгийн гялалзах градиент */
+.light .text-gradient {
+  background-image: linear-gradient(90deg, #2e1a66, #7b2fa8, #a855f7, #7b2fa8, #2e1a66);
+}
+
+/* Scrollbar */
+.light ::-webkit-scrollbar-track { background: #ebe0ff; }
+html.light { scrollbar-color: #7b2fa8 #ebe0ff; }
