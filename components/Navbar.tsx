@@ -8,8 +8,11 @@ import ThemeToggle from "@/components/ThemeToggle";
 
 const links = [
   { href: "/", label: "Нүүр" },
+  { href: "/#solutions", label: "Шийдэл" },
+  { href: "/#industries", label: "Салбар" },
   { href: "/news", label: "Мэдээ" },
   { href: "/about", label: "Бидний тухай" },
+  { href: "/#contact", label: "Холбоо барих" },
 ];
 
 export default function Navbar() {
@@ -29,8 +32,38 @@ export default function Navbar() {
     setOpen(false);
   }, [pathname]);
 
-  const isActive = (href: string) =>
-    href === "/" ? pathname === "/" : pathname.startsWith(href);
+  // "#" агуулсан линк идэвхтэй гэж тодорхойлогдохгүй
+  const isActive = (href: string) => {
+    if (href.includes("#")) return false;
+    return href === "/" ? pathname === "/" : pathname.startsWith(href);
+  };
+
+  // "/#contact" гэх мэт хэсэг рүү шилжих линк
+  const handleClick = (
+    e: React.MouseEvent<HTMLAnchorElement>,
+    href: string
+  ) => {
+    if (pathname !== "/") return; // Өөр хуудсанд байвал Next.js нүүр рүү аваачна, HashScroll гүйлгэнэ
+
+    const i = href.indexOf("#");
+
+    if (i !== -1) {
+      // Нүүр хуудсан дээрх хэсэг рүү гүйлгэх
+      e.preventDefault();
+      const id = href.slice(i + 1);
+      document
+        .getElementById(id)
+        ?.scrollIntoView({ behavior: "smooth", block: "start" });
+      history.pushState(null, "", href);
+      setOpen(false);
+    } else if (href === "/") {
+      // Нүүр хуудсан дээр "Нүүр" дарвал дээш гүйлгэнэ
+      e.preventDefault();
+      window.scrollTo({ top: 0, behavior: "smooth" });
+      history.pushState(null, "", "/");
+      setOpen(false);
+    }
+  };
 
   return (
     <header
@@ -42,7 +75,11 @@ export default function Navbar() {
       }`}
     >
       <nav className="mx-auto flex max-w-6xl items-center justify-between px-6 py-3">
-        <Link href="/" className="rounded-xl bg-white px-3 py-1.5 shadow-md">
+        <Link
+          href="/"
+          onClick={(e) => handleClick(e, "/")}
+          className="rounded-xl bg-white px-3 py-1.5 shadow-md"
+        >
           <Image
             src="/image002.png"
             alt="Smartcard"
@@ -54,11 +91,12 @@ export default function Navbar() {
 
         <div className="flex items-center gap-4">
           {/* Компьютер дээрх цэс */}
-          <ul className="hidden items-center gap-8 md:flex">
+          <ul className="hidden items-center gap-6 lg:flex">
             {links.map((link) => (
               <li key={link.href}>
                 <Link
                   href={link.href}
+                  onClick={(e) => handleClick(e, link.href)}
                   className={`group relative text-sm font-medium transition hover:text-white ${
                     isActive(link.href) ? "text-white" : "text-purple-200"
                   }`}
@@ -82,7 +120,7 @@ export default function Navbar() {
             onClick={() => setOpen(!open)}
             aria-label="Цэс нээх"
             aria-expanded={open}
-            className="flex h-10 w-10 flex-col items-center justify-center gap-1.5 md:hidden"
+            className="flex h-10 w-10 flex-col items-center justify-center gap-1.5 lg:hidden"
           >
             <span className={`h-0.5 w-6 bg-white transition duration-300 ${open ? "translate-y-2 rotate-45" : ""}`} />
             <span className={`h-0.5 w-6 bg-white transition duration-300 ${open ? "opacity-0" : ""}`} />
@@ -93,11 +131,12 @@ export default function Navbar() {
 
       {/* Утасны цэс */}
       {open && (
-        <ul className="flex flex-col gap-1 px-6 pb-4 md:hidden">
+        <ul className="flex flex-col gap-1 px-6 pb-4 lg:hidden">
           {links.map((link) => (
             <li key={link.href}>
               <Link
                 href={link.href}
+                onClick={(e) => handleClick(e, link.href)}
                 className={`block rounded-lg px-3 py-3 transition hover:bg-white/10 hover:text-white ${
                   isActive(link.href) ? "bg-white/10 text-white" : "text-purple-100"
                 }`}
