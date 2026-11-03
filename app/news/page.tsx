@@ -1,13 +1,12 @@
 import { Suspense } from "react";
 import NewsList from "@/components/NewsLists";
-import { newsList } from "@/lib/news";
-import { getAllNews } from "@/lib/rss";
+import { getNewsFeed } from "@/lib/db";
 
 export const metadata = { title: "Мэдээ | Смарткарт" };
 
 async function AllNews() {
-  const external = await getAllNews();
-  const items = external.length > 0 ? external : newsList;
+  const items = await getNewsFeed();
+  if (items.length === 0) return <p className="u-soft">Одоогоор мэдээ алга.</p>;
   return <NewsList items={items} />;
 }
 
