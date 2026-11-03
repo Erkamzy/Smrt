@@ -1,33 +1,87 @@
 import { Suspense } from "react";
-import NewsList from "@/components/NewsLists";
+import Image from "next/image";
+import Link from "next/link";
+import { notFound } from "next/navigation";
+import { ArrowLeft } from "lucide-react";
+import NewsCard from "@/components/NewsCard";
 import { newsList } from "@/lib/news";
-import { getAllNews } from "@/lib/rss";
 
-export const metadata = { title: "Мэдээ | Smartcard" };
-
-async function AllNews() {
-  const external = await getAllNews();
-  const items = external.length > 0 ? external : newsList;
-  return <NewsList items={items} />;
+export function generateStaticParams() {
+  return newsList.map((n) => ({ id: String(n.id) }));
 }
 
-export default function NewsPage() {
+async function NewsContent({ params }: { params: Promise<{ id: string }> }) {
+  const { id } = await params;
+  const item = newsList.find((n) => n.id === Number(id));
+
+  if (!item) notFound();
+
+  const others = newsList.filter((n) => n.id !== item.id).slice(0, 3);
+
   return (
-    <main className="min-h-screen bg-gradient-to-br from-[#1a0b3d] via-[#2E1A66] to-[#1a0b3d] px-6 pb-16 pt-28 text-white">
-      <section className="mx-auto max-w-6xl">
-        <h1 className="animate-fade-up mb-2 text-4xl font-extrabold sm:text-5xl">
-          Мэдээ мэдээлэл
-        </h1>
-        <p
-          style={{ "--delay": "0.1s" } as React.CSSProperties}
-          className="animate-fade-up mb-10 text-purple-200/80"
+    <>
+      <article className="animate-fade-up mx-auto max-w-3xl">
+        <Link
+          href="/news"
+          className="u-accent mb-6 inline-flex items-center gap-1 text-sm font-semibold"
         >
-          Бидний сүүлийн үеийн мэдээ, шинэчлэлт, арга хэмжээ.
-        </p>
-        <Suspense fallback={<p className="text-purple-200/70">Мэдээ ачаалж байна...</p>}>
-          <AllNews />
-        </Suspense>
-      </section>
+          <ArrowLeft className="h-4 w-4" /> Бүх мэдээ
+        </Link>
+
+        <div>
+          <span className="rounded-full bg-[#7b2fa8] px-3 py-1 text-xs font-semibold text-white">
+            {item.category}
+          </span>
+        </div>
+        <h1 className="mt-4 text-3xl font-extrabold leading-tight tracking-tight sm:text-5xl">
+          {item.title}
+        </h1>
+        <time className="u-soft mt-3 block text-sm">{item.date}</time>
+
+        {item.image && (
+          <div className="sc-card relative mt-8 h-64 w-full overflow-hidden sm:h-96">
+            <Image
+              src={item.image}
+              alt={item.title}
+              fill
+              priority
+              sizes="(max-width: 768px) 100vw, 768px"
+              className="object-cover"
+            />
+          </div>
+        )}
+
+        <div className="u-soft mt-8 space-y-5 text-lg leading-relaxed">
+          {item.content.map((p, i) => (
+            <p key={i}>{p}</p>
+          ))}
+        </div>
+      </article>
+
+      {others.length > 0 && (
+        <section className="mx-auto mt-20 max-w-6xl">
+          <h2 className="mb-6 text-2xl font-bold">Бусад мэдээ</h2>
+          <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+            {others.map((n) => (
+              <NewsCard key={n.id} {...n} />
+            ))}
+          </div>
+        </section>
+      )}
+    </>
+  );
+}
+
+export default function NewsDetail({
+  params,
+}: {
+  params: Promise<{ id: string }>;
+}) {
+  return (
+    <main className="u-bg u-fg min-h-screen px-6 pb-24 pt-32">
+      <Suspense fallback={<p className="u-soft mx-auto max-w-3xl">Ачаалж байна...</p>}>
+        <NewsContent params={params} />
+      </Suspense>
     </main>
   );
 }

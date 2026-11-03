@@ -19,10 +19,8 @@ export default function NewsList({ items }: { items: News[] }) {
           <button
             key={cat}
             onClick={() => setActive(cat)}
-            className={`rounded-full px-5 py-2 text-sm font-semibold transition ${
-              active === cat
-                ? "bg-[#7B2FA8] text-white shadow-lg shadow-purple-950/50"
-                : "bg-white/10 text-purple-100 hover:bg-white/20"
+            className={`sc-btn px-5 py-2 text-sm ${
+              active === cat ? "sc-btn-primary" : "sc-btn-ghost"
             }`}
           >
             {cat}
@@ -32,7 +30,7 @@ export default function NewsList({ items }: { items: News[] }) {
 
       <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
         {filtered.map((item, i) => (
-          <Reveal key={`${active}-${item.id}`} delay={(i % 3) * 0.1}>
+          <Reveal key={`${active}-${item.id}`} delay={(i % 3) * 0.1} className="h-full">
             <NewsCard {...item} />
           </Reveal>
         ))}

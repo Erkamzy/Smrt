@@ -32,7 +32,7 @@ export default function Navbar() {
     setOpen(false);
   }, [pathname]);
 
-  // "#" агуулсан линк идэвхтэй гэж тодорхойлогдохгүй
+  // "#"-тэй линк идэвхтэй гэж тодрохгүй
   const isActive = (href: string) => {
     if (href.includes("#")) return false;
     return href === "/" ? pathname === "/" : pathname.startsWith(href);
@@ -48,7 +48,6 @@ export default function Navbar() {
     const i = href.indexOf("#");
 
     if (i !== -1) {
-      // Нүүр хуудсан дээрх хэсэг рүү гүйлгэх
       e.preventDefault();
       const id = href.slice(i + 1);
       document
@@ -57,7 +56,6 @@ export default function Navbar() {
       history.pushState(null, "", href);
       setOpen(false);
     } else if (href === "/") {
-      // Нүүр хуудсан дээр "Нүүр" дарвал дээш гүйлгэнэ
       e.preventDefault();
       window.scrollTo({ top: 0, behavior: "smooth" });
       history.pushState(null, "", "/");
@@ -67,18 +65,16 @@ export default function Navbar() {
 
   return (
     <header
-      style={{ "--delay": pathname === "/" ? "2s" : "0s" } as React.CSSProperties}
+      style={{ "--delay": "0s" } as React.CSSProperties}
       className={`animate-slide-down fixed inset-x-0 top-0 z-50 transition-all duration-300 ${
-        scrolled || open
-          ? "bg-[#1a0b3d]/80 shadow-lg shadow-purple-950/40 backdrop-blur-md"
-          : "bg-transparent"
+        scrolled || open ? "sc-nav-solid" : "bg-transparent"
       }`}
     >
       <nav className="mx-auto flex max-w-6xl items-center justify-between px-6 py-3">
         <Link
           href="/"
           onClick={(e) => handleClick(e, "/")}
-          className="rounded-xl bg-white px-3 py-1.5 shadow-md"
+          className="rounded-xl bg-white px-3 py-1.5 shadow-sm ring-1 ring-black/5"
         >
           <Image
             src="/image002.png"
@@ -89,7 +85,7 @@ export default function Navbar() {
           />
         </Link>
 
-        <div className="flex items-center gap-4">
+        <div className="flex items-center gap-3">
           {/* Компьютер дээрх цэс */}
           <ul className="hidden items-center gap-6 lg:flex">
             {links.map((link) => (
@@ -97,13 +93,13 @@ export default function Navbar() {
                 <Link
                   href={link.href}
                   onClick={(e) => handleClick(e, link.href)}
-                  className={`group relative text-sm font-medium transition hover:text-white ${
-                    isActive(link.href) ? "text-white" : "text-purple-200"
+                  className={`group relative text-sm font-medium transition hover:text-[var(--fg)] ${
+                    isActive(link.href) ? "u-fg" : "u-soft"
                   }`}
                 >
                   {link.label}
                   <span
-                    className={`absolute -bottom-1 left-0 h-0.5 bg-[#9440C4] transition-all duration-300 group-hover:w-full ${
+                    className={`absolute -bottom-1 left-0 h-0.5 bg-[var(--accent)] transition-all duration-300 group-hover:w-full ${
                       isActive(link.href) ? "w-full" : "w-0"
                     }`}
                   />
@@ -112,7 +108,6 @@ export default function Navbar() {
             ))}
           </ul>
 
-          {/* Харанхуй / цайвар горим */}
           <ThemeToggle />
 
           {/* Утасны цэсний товч */}
@@ -122,9 +117,9 @@ export default function Navbar() {
             aria-expanded={open}
             className="flex h-10 w-10 flex-col items-center justify-center gap-1.5 lg:hidden"
           >
-            <span className={`h-0.5 w-6 bg-white transition duration-300 ${open ? "translate-y-2 rotate-45" : ""}`} />
-            <span className={`h-0.5 w-6 bg-white transition duration-300 ${open ? "opacity-0" : ""}`} />
-            <span className={`h-0.5 w-6 bg-white transition duration-300 ${open ? "-translate-y-2 -rotate-45" : ""}`} />
+            <span className={`h-0.5 w-6 bg-[var(--fg)] transition duration-300 ${open ? "translate-y-2 rotate-45" : ""}`} />
+            <span className={`h-0.5 w-6 bg-[var(--fg)] transition duration-300 ${open ? "opacity-0" : ""}`} />
+            <span className={`h-0.5 w-6 bg-[var(--fg)] transition duration-300 ${open ? "-translate-y-2 -rotate-45" : ""}`} />
           </button>
         </div>
       </nav>
@@ -137,8 +132,8 @@ export default function Navbar() {
               <Link
                 href={link.href}
                 onClick={(e) => handleClick(e, link.href)}
-                className={`block rounded-lg px-3 py-3 transition hover:bg-white/10 hover:text-white ${
-                  isActive(link.href) ? "bg-white/10 text-white" : "text-purple-100"
+                className={`block rounded-lg px-3 py-3 transition hover:bg-[var(--surface-2)] ${
+                  isActive(link.href) ? "u-fg bg-[var(--surface-2)]" : "u-soft"
                 }`}
               >
                 {link.label}

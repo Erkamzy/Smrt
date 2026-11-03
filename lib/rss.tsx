@@ -7,12 +7,38 @@ const HEADERS = { "User-Agent": "Mozilla/5.0 (compatible; SmartcardBot/1.0)" };
 
 function decode(text: string) {
   return text
-    .replace(/&#(\d+);/g, (_, n) => String.fromCharCode(Number(n))) // &#8220; гэх мэт
+    .replace(/&#(\d+);/g, (_, n) => String.fromCharCode(Number(n)))
     .replace(/&nbsp;/g, " ")
     .replace(/&ldquo;|&rdquo;|&quot;/g, '"')
     .replace(/&lsquo;|&rsquo;|&#39;/g, "'")
     .replace(/&ndash;|&mdash;/g, "-")
     .replace(/&amp;/g, "&");
+}
+
+// Товчлол, онцгой нэрийг том үсгээр хэвээр үлдээнэ
+const KEEP = [
+  "AI", "ЦХИХХЯ", "УИХ", "НҮБ", "ХХК", "GPU", "E-MONGOLIA", "MDDIC", "BRT",
+  "Монгол", "Улсын", "Улс", "Казахстан", "Истанбул", "Астана", "Говь-Алтай",
+  "Улаанбаатар", "Төв", "Ази",
+];
+
+// Бүх том үсгээр бичсэн гарчгийг жижиг болгоно
+function fixCaps(s: string) {
+  const letters = s.replace(/[^A-Za-zА-Яа-яӨөҮү]/g, "");
+  if (letters.length < 8) return s;
+  const upper = letters.replace(/[^A-ZА-ЯӨҮ]/g, "").length;
+  if (upper / letters.length < 0.7) return s;
+
+  const out = s
+    .toLowerCase()
+    .split(/(\s+)/)
+    .map((w) => {
+      const core = w.replace(/[^\p{L}\d-]/gu, "");
+      const hit = KEEP.find((k) => k.toLowerCase() === core);
+      return hit ? w.replace(core, hit) : w;
+    })
+    .join("");
+  return out.charAt(0).toUpperCase() + out.slice(1);
 }
 
 // HTML-ийг цэвэрлэж, эхний догол мөрийг богино хураангуй болгоно
@@ -24,7 +50,6 @@ function summarize(html = "", max = 150) {
   return plain.length > max ? plain.slice(0, max).trimEnd() + "…" : plain;
 }
 
-// HTML доторх эхний зургийг олно
 function firstImage(html = ""): string {
   return (
     html.match(/data-src="(https?:\/\/[^"]+)"/)?.[1] ??
@@ -33,7 +58,6 @@ function firstImage(html = ""): string {
   );
 }
 
-// Зургийг олно: media:content, enclosure, content:encoded, description
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 function feedImage(item: any, html: string): string {
   const media = item["media:content"];
@@ -46,7 +70,6 @@ function feedImage(item: any, html: string): string {
   );
 }
 
-// Мэдээний хуудаснаас og:image авна (feed-д зураг байхгүй үед)
 async function getOgImage(url?: string): Promise<string> {
   if (!url) return "";
   try {
@@ -105,7 +128,7 @@ export async function getRssNews(
         return {
           id: i + 1,
           category,
-          title: decode(String(item.title ?? "Гарчиггүй").trim()),
+          title: fixCaps(decode(String(item.title ?? "Гарчиггүй").trim())),
           summary,
           content: [summary],
           date,

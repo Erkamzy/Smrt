@@ -12,26 +12,26 @@ export default function Footer() {
   }, []);
 
   return (
-    <footer className="border-t border-white/10 bg-[#12072b] px-6 py-10 text-purple-200/80">
+    <footer className="u-soft border-t border-[var(--line)] bg-[var(--bg-alt)] px-6 py-12">
       <div className="mx-auto grid max-w-6xl gap-8 text-sm md:grid-cols-3">
         <div>
-          <p className="font-semibold text-white">{company.name}</p>
+          <p className="u-fg text-base font-bold">{company.name}</p>
           <p className="mt-2">Digital Identity and Security</p>
         </div>
 
         <div className="flex flex-col gap-2">
-          <Link href="/" className="hover:text-white">Нүүр</Link>
-          <Link href="/news" className="hover:text-white">Мэдээ</Link>
-          <Link href="/about" className="hover:text-white">Бидний тухай</Link>
+          <Link href="/" className="transition hover:text-[var(--fg)]">Нүүр</Link>
+          <Link href="/news" className="transition hover:text-[var(--fg)]">Мэдээ</Link>
+          <Link href="/about" className="transition hover:text-[var(--fg)]">Бидний тухай</Link>
         </div>
 
         <div className="flex flex-col gap-2">
-          <a href={company.phoneHref} className="hover:text-white">{company.phone}</a>
-          <a href={`mailto:${company.email}`} className="hover:text-white">{company.email}</a>
+          <a href={company.phoneHref} className="transition hover:text-[var(--fg)]">{company.phone}</a>
+          <a href={`mailto:${company.email}`} className="transition hover:text-[var(--fg)]">{company.email}</a>
         </div>
       </div>
 
-      <p className="mx-auto mt-8 max-w-6xl border-t border-white/10 pt-6 text-center text-xs">
+      <p className="mx-auto mt-10 max-w-6xl border-t border-[var(--line)] pt-6 text-center text-xs">
         © {year ?? ""} {company.name}. Бүх эрх хуулиар хамгаалагдсан.
       </p>
     </footer>

@@ -20,8 +20,9 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Smartcard",
-  description: "Digital Identity and Security",
+  title: "Смарткарт ХХК | Smartcard",
+  description:
+    "Digital Identity and Security. Төлбөрийн карт, цахим бүртгэл, аюулгүй байдлын шийдэл.",
 };
 
 export default function RootLayout({
@@ -35,7 +36,7 @@ export default function RootLayout({
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
         <Script id="theme-init" strategy="beforeInteractive">
-          {`try{if(localStorage.getItem("theme")==="light")document.documentElement.classList.add("light")}catch(e){}`}
+          {`try{if(localStorage.getItem("theme")==="dark")document.documentElement.classList.add("dark")}catch(e){}`}
         </Script>
         <Suspense fallback={null}>
           <Navbar />
