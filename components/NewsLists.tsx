@@ -30,7 +30,7 @@ export default function NewsList({ items }: { items: News[] }) {
 
       <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
         {filtered.map((item, i) => (
-          <Reveal key={`${active}-${item.id}`} delay={(i % 3) * 0.1} className="h-full">
+          <Reveal key={`${active}-${item.url ?? item.id}`} delay={(i % 3) * 0.1} className="h-full">
             <NewsCard {...item} />
           </Reveal>
         ))}

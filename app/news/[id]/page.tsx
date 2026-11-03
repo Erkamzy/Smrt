@@ -4,19 +4,29 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { ArrowLeft } from "lucide-react";
 import NewsCard from "@/components/NewsCard";
+import { getCompanyNews, getCompanyNewsById } from "@/lib/db";
 import { newsList } from "@/lib/news";
 
-export function generateStaticParams() {
-  return newsList.map((n) => ({ id: String(n.id) }));
+export async function generateStaticParams() {
+  const list = await getCompanyNews();
+  // Хоосон жагсаалт build-ийг унагаах тул дор хаяж нэг утга буцаана
+  return (list.length > 0 ? list : newsList).map((n) => ({ id: String(n.id) }));
+}
+
+export async function generateMetadata({ params }: { params: Promise<{ id: string }> }) {
+  const item = await getCompanyNewsById(Number((await params).id));
+  return item
+    ? { title: `${item.title} | Смарткарт`, description: item.summary }
+    : { title: "Мэдээ | Смарткарт" };
 }
 
 async function NewsContent({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;
-  const item = newsList.find((n) => n.id === Number(id));
+  const item = await getCompanyNewsById(Number(id));
 
   if (!item) notFound();
 
-  const others = newsList.filter((n) => n.id !== item.id).slice(0, 3);
+  const others = (await getCompanyNews()).filter((n) => n.id !== item.id).slice(0, 3);
 
   return (
     <>
@@ -45,6 +55,7 @@ async function NewsContent({ params }: { params: Promise<{ id: string }> }) {
               alt={item.title}
               fill
               priority
+              unoptimized={item.image.startsWith("http")}
               sizes="(max-width: 768px) 100vw, 768px"
               className="object-cover"
             />

@@ -20,6 +20,31 @@ You can start editing the page by modifying `app/page.tsx`. The page auto-update
 
 This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
 
+## Өгөгдлийн сан (Supabase) тохируулах
+
+1. [supabase.com](https://supabase.com) дээр шинэ төсөл үүсгэнэ.
+2. **SQL Editor** → `supabase/schema.sql` файлын агуулгыг бүтнээр нь хуулж **Run** дарна.
+   Энэ нь `news`, `contact_messages` хүснэгт, `news-images` зургийн bucket, жишээ мэдээг үүсгэнэ.
+3. `.env.example`-ийг `.env.local` болгон хуулж, **Project Settings → API Keys** хэсгээс утгуудыг бөглөнө:
+
+   ```
+   NEXT_PUBLIC_SUPABASE_URL=https://xxxx.supabase.co
+   SUPABASE_SECRET_KEY=sb_secret_...
+   ADMIN_PASSWORD=8-аас-дээш-тэмдэгт
+   ```
+
+4. `npm run dev`-ийг дахин асаана.
+
+Deploy хийхдээ (Vercel г.м.) эдгээр 3 хувьсагчийг Environment Variables-д нэмнэ.
+
+### Боломжууд
+
+- **Холбоо барих форм** (нүүр хуудас) — хүсэлт `contact_messages` хүснэгтэд хадгалагдана.
+- **Мэдээ** — компанийн өөрийн мэдээ (өгөгдлийн сангаас) болон mddic.gov.mn-ийн RSS мэдээ хамт харагдана.
+- **Админ** — `/admin` хаягаар нэвтэрч хүсэлтүүдийг харах, мэдээ нэмэх / засах / нуух / устгах, зураг хуулах.
+
+Supabase тохируулаагүй үед сайт статик жишээ мэдээгээр ажилласаар байна.
+
 ## Learn More
 
 To learn more about Next.js, take a look at the following resources:

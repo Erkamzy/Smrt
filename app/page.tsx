@@ -17,6 +17,7 @@ import {
   ShoppingBag,
   type LucideIcon,
 } from "lucide-react";
+import ContactForm from "@/components/ContactForm";
 import Counter from "@/components/Counter";
 import LatestNews from "@/components/LatestNews";
 import Reveal from "@/components/Reveal";
@@ -370,18 +371,24 @@ export default function Home() {
       {/* ===== Холбоо барих ===== */}
       <section id="contact" className="relative mx-auto max-w-6xl px-6 pb-24">
         <Reveal>
-          <div className="rounded-3xl bg-gradient-to-br from-[#5a1f80] to-[#2e1a66] px-8 py-16 text-center text-white">
-            <h2 className="text-3xl font-extrabold tracking-tight sm:text-4xl">Холбоо барих</h2>
-            <p className="sc-on-dark-soft mx-auto mt-4 max-w-xl text-lg">
-              Асуулт, санал хүсэлтээ бидэнд илгээгээрэй.
-            </p>
-            <div className="mt-8 flex flex-wrap justify-center gap-4">
-              <a href={company.phoneHref} className="sc-btn bg-white text-[#2e1a66] hover:bg-[#f3ebfd]">
-                <Phone className="h-4 w-4" /> {company.phone}
-              </a>
-              <a href={`mailto:${company.email}`} className="sc-btn sc-btn-on-dark">
-                <Mail className="h-4 w-4" /> {company.email}
-              </a>
+          <div className="grid items-stretch gap-8 rounded-3xl bg-gradient-to-br from-[#5a1f80] to-[#2e1a66] p-8 text-white md:p-12 lg:grid-cols-5">
+            <div className="lg:col-span-2">
+              <h2 className="text-3xl font-extrabold tracking-tight sm:text-4xl">Холбоо барих</h2>
+              <p className="sc-on-dark-soft mt-4 text-lg">
+                Асуулт, санал хүсэлтээ бидэнд илгээгээрэй. Манай мэргэжилтнүүд тантай
+                эргэн холбогдоно.
+              </p>
+              <div className="mt-8 flex flex-col items-start gap-4">
+                <a href={company.phoneHref} className="sc-btn bg-white text-[#2e1a66] hover:bg-[#f3ebfd]">
+                  <Phone className="h-4 w-4" /> {company.phone}
+                </a>
+                <a href={`mailto:${company.email}`} className="sc-btn sc-btn-on-dark">
+                  <Mail className="h-4 w-4" /> {company.email}
+                </a>
+              </div>
+            </div>
+            <div className="u-fg lg:col-span-3">
+              <ContactForm />
             </div>
           </div>
         </Reveal>
