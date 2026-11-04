@@ -45,7 +45,11 @@ export async function getCompanyNews(): Promise<News[]> {
   "use cache";
   cacheTag(NEWS_TAG);
   cacheLife("hours");
+  return queryPublishedNews();
+}
 
+// Кэшгүй: устгасан/нуусан мэдээ хэзээ ч харагдахгүй байх шаардлагатай газарт ашиглана
+export async function queryPublishedNews(): Promise<News[]> {
   const client = db();
   if (!client) return newsList;
 

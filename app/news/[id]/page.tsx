@@ -2,9 +2,11 @@ import { Suspense } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
+import { connection } from "next/server";
 import { ArrowLeft } from "lucide-react";
 import NewsCard from "@/components/NewsCard";
-import { getCompanyNews, getCompanyNewsById } from "@/lib/db";
+import { getCompanyNews, getCompanyNewsById, queryPublishedNews } from "@/lib/db";
+import { getAllNews } from "@/lib/rss";
 import { newsList } from "@/lib/news";
 
 export async function generateStaticParams() {
@@ -25,8 +27,6 @@ async function NewsContent({ params }: { params: Promise<{ id: string }> }) {
   const item = await getCompanyNewsById(Number(id));
 
   if (!item) notFound();
-
-  const others = (await getCompanyNews()).filter((n) => n.id !== item.id).slice(0, 3);
 
   return (
     <>
@@ -69,17 +69,33 @@ async function NewsContent({ params }: { params: Promise<{ id: string }> }) {
         </div>
       </article>
 
-      {others.length > 0 && (
-        <section className="mx-auto mt-20 max-w-6xl">
-          <h2 className="mb-6 text-2xl font-bold">Бусад мэдээ</h2>
-          <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-            {others.map((n) => (
-              <NewsCard key={n.id} {...n} />
-            ))}
-          </div>
-        </section>
-      )}
+      <Suspense fallback={null}>
+        <OtherNews currentId={item.id} />
+      </Suspense>
     </>
+  );
+}
+
+// "Бусад мэдээ"-г кэшгүй уншина: устгасан мэдээ хуучин кэшээс гарч ирэхгүй.
+// Компанийн мэдээ 3-аас цөөн бол RSS мэдээгээр нөхнө.
+async function OtherNews({ currentId }: { currentId: number }) {
+  await connection();
+  const [own, external] = await Promise.all([queryPublishedNews(), getAllNews()]);
+  const others = [
+    ...own.filter((n) => n.id !== currentId),
+    ...[...external].sort((a, b) => b.date.localeCompare(a.date)),
+  ].slice(0, 3);
+
+  if (others.length === 0) return null;
+  return (
+    <section className="mx-auto mt-20 max-w-6xl">
+      <h2 className="mb-6 text-2xl font-bold">Бусад мэдээ</h2>
+      <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+        {others.map((n) => (
+          <NewsCard key={n.url ?? `own-${n.id}`} {...n} />
+        ))}
+      </div>
+    </section>
   );
 }
 
