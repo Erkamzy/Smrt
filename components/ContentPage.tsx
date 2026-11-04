@@ -1,38 +1,79 @@
 /* eslint-disable @next/next/no-img-element -- зургууд smrt.mn-ээс шууд ачаалагдана */
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { ArrowUpRight, ChevronRight } from "lucide-react";
-import { breadcrumbs, childrenOf, getPage, preview, type Block } from "@/lib/pages";
+import { ArrowUpRight, Check, ChevronRight } from "lucide-react";
+import { breadcrumbs, childrenOf, getPage, groupBlocks, preview, type Block } from "@/lib/pages";
+
+function BlockView({ b }: { b: Block }) {
+  switch (b.t) {
+    case "h":
+      return b.l <= 2 ? (
+        <h2 className="pt-6 text-2xl font-extrabold tracking-tight sm:text-3xl">{b.x}</h2>
+      ) : (
+        <h3 className="pt-3 text-lg font-bold">{b.x}</h3>
+      );
+    case "p":
+      return <p className="u-soft text-lg leading-relaxed">{b.x}</p>;
+    case "ul":
+      return (
+        <ul className="grid gap-3 sm:grid-cols-2">
+          {b.items.map((item, j) => (
+            <li key={j} className="sc-card flex gap-3 p-4 text-sm leading-relaxed">
+              <span className="mt-1.5 h-2 w-2 shrink-0 rounded-full bg-[var(--accent)]" />
+              <span>{item}</span>
+            </li>
+          ))}
+        </ul>
+      );
+    case "img":
+      return (
+        <figure className="sc-card flex justify-center overflow-hidden bg-white p-4">
+          <img src={b.src} alt={b.alt} loading="lazy" className="max-h-80 w-auto object-contain" />
+        </figure>
+      );
+  }
+}
 
 function Blocks({ blocks }: { blocks: Block[] }) {
   return (
     <div className="space-y-5">
-      {blocks.map((b, i) => {
-        switch (b.t) {
-          case "h":
-            return b.l <= 2 ? (
-              <h2 key={i} className="pt-6 text-2xl font-extrabold tracking-tight sm:text-3xl">{b.x}</h2>
-            ) : (
-              <h3 key={i} className="pt-3 text-lg font-bold">{b.x}</h3>
-            );
-          case "p":
-            return <p key={i} className="u-soft text-lg leading-relaxed">{b.x}</p>;
-          case "ul":
+      {groupBlocks(blocks).map((g, i) => {
+        switch (g.k) {
+          case "block":
+            return <BlockView key={i} b={g.b} />;
+          case "chips":
             return (
-              <ul key={i} className="grid gap-3 sm:grid-cols-2">
-                {b.items.map((item, j) => (
-                  <li key={j} className="sc-card flex gap-3 p-4 text-sm leading-relaxed">
-                    <span className="mt-1.5 h-2 w-2 shrink-0 rounded-full bg-[var(--accent)]" />
-                    <span>{item}</span>
-                  </li>
+              <div key={i} className="flex flex-wrap gap-3 pt-6">
+                {g.items.map((x) => (
+                  <span key={x} className="rounded-full bg-[var(--accent-strong)] px-4 py-2 text-sm font-bold text-white">
+                    {x}
+                  </span>
                 ))}
-              </ul>
+              </div>
             );
-          case "img":
+          case "tiles":
             return (
-              <figure key={i} className="sc-card overflow-hidden bg-white">
-                <img src={b.src} alt={b.alt} loading="lazy" className="mx-auto max-h-[28rem] w-auto object-contain" />
-              </figure>
+              <div key={i} className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
+                {g.items.map((x) => (
+                  <div key={x} className="sc-card flex items-center gap-3 p-4">
+                    <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-[var(--surface-2)] text-[var(--accent)]">
+                      <Check className="h-4 w-4" />
+                    </span>
+                    <span className="text-sm font-semibold leading-snug">{x}</span>
+                  </div>
+                ))}
+              </div>
+            );
+          case "stats":
+            return (
+              <div key={i} className="grid grid-cols-2 gap-4 pt-6 sm:grid-cols-3 lg:grid-cols-4">
+                {g.items.map((s) => (
+                  <div key={s.n + s.label} className="sc-card p-5">
+                    <div className="u-accent text-3xl font-extrabold tabular-nums">{s.n}</div>
+                    <div className="u-soft mt-1.5 text-sm leading-snug">{s.label}</div>
+                  </div>
+                ))}
+              </div>
             );
         }
       })}
@@ -48,7 +89,19 @@ export default function ContentPage({ path }: { path: string }) {
   const children = childrenOf(page.path);
   // Дэд хуудастай бол эхний зургаас өмнөх танилцуулгыг л харуулж, үлдсэнийг картаар солино
   const firstImg = page.blocks.findIndex((b) => b.t === "img");
-  const blocks = children.length && firstImg >= 0 ? page.blocks.slice(0, firstImg) : page.blocks;
+  let blocks = children.length && firstImg >= 0 ? page.blocks.slice(0, firstImg) : page.blocks;
+
+  // Хамтрагчийн хуудас: эхний зураг нь лого тул танилцуулгын хажууд жижиг картанд харуулна
+  let logo: Extract<Block, { t: "img" }> | null = null;
+  let intro: Block[] = [];
+  if (page.path.startsWith("/partners/") && firstImg >= 0) {
+    logo = page.blocks[firstImg] as Extract<Block, { t: "img" }>;
+    const rest = page.blocks.filter((_, i) => i !== firstImg);
+    const firstH = rest.findIndex((b) => b.t === "h");
+    const cut = firstH < 0 ? rest.length : firstH;
+    intro = rest.slice(0, cut);
+    blocks = rest.slice(cut);
+  }
 
   return (
     <main className="u-bg u-fg min-h-screen px-6 pb-24 pt-32">
@@ -63,7 +116,23 @@ export default function ContentPage({ path }: { path: string }) {
           ))}
         </nav>
 
-        <h1 className="animate-fade-up mt-4 text-4xl font-extrabold tracking-tight sm:text-5xl">{page.title}</h1>
+        {logo ? (
+          <div className="mt-4 grid items-center gap-8 md:grid-cols-[1fr_16rem]">
+            <div>
+              <h1 className="animate-fade-up text-4xl font-extrabold tracking-tight sm:text-5xl">{page.title}</h1>
+              <div className="mt-6 space-y-4">
+                {intro.map((b, i) => (
+                  <BlockView key={i} b={b} />
+                ))}
+              </div>
+            </div>
+            <div className="sc-card order-first flex h-40 items-center justify-center bg-white p-6 md:order-none">
+              <img src={logo.src} alt={page.title} className="max-h-full w-auto object-contain" />
+            </div>
+          </div>
+        ) : (
+          <h1 className="animate-fade-up mt-4 text-4xl font-extrabold tracking-tight sm:text-5xl">{page.title}</h1>
+        )}
 
         <div className="mt-10">
           <Blocks blocks={blocks} />
