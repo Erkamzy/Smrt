@@ -32,13 +32,13 @@ const stats = [
   { to: 3, label: "Шийдлийн чиглэл" },
 ] as { text?: string; to?: number; suffix?: string; label: string }[];
 
-const industries: { Icon: LucideIcon; title: string; text: string }[] = [
-  { Icon: Landmark, title: "Банк санхүү", text: "Төлбөрийн карт хэвлэл, бэлдэц, аюулгүй төлбөр тооцооны шийдэл" },
-  { Icon: Building2, title: "Засгийн газар", text: "Биет болон цахим бичиг баримтын шийдэл" },
-  { Icon: Cpu, title: "Технологи", text: "Мэдээллийн аюулгүй байдал, интернет төлбөр тооцооны шийдэл" },
-  { Icon: RadioTower, title: "Үүрэн холбоо", text: "Сим карт, е-сим картын шийдэл" },
-  { Icon: Mountain, title: "Уул уурхай", text: "Тээврийн хэрэгслийн удирдлага, аюулгүй байдлын систем" },
-  { Icon: ShoppingBag, title: "Худалдаа, үйлчилгээ", text: "Гишүүнчлэл, хөнгөлөлтийн карт, интернет төлбөр тооцооны шийдэл" },
+const industries: { Icon: LucideIcon; title: string; text: string; href: string }[] = [
+  { Icon: Landmark, title: "Банк санхүү", text: "Төлбөрийн карт хэвлэл, бэлдэц, аюулгүй төлбөр тооцооны шийдэл", href: "/industry/financial" },
+  { Icon: Building2, title: "Засгийн газар", text: "Биет болон цахим бичиг баримтын шийдэл", href: "/industry/government" },
+  { Icon: Cpu, title: "Технологи", text: "Мэдээллийн аюулгүй байдал, интернет төлбөр тооцооны шийдэл", href: "/industry/it" },
+  { Icon: RadioTower, title: "Үүрэн холбоо", text: "Сим карт, е-сим картын шийдэл", href: "/industry/telecommunications" },
+  { Icon: Mountain, title: "Уул уурхай", text: "Тээврийн хэрэгслийн удирдлага, аюулгүй байдлын систем", href: "/industry/mining" },
+  { Icon: ShoppingBag, title: "Худалдаа, үйлчилгээ", text: "Гишүүнчлэл, хөнгөлөлтийн карт, интернет төлбөр тооцооны шийдэл", href: "/industry/retail" },
 ];
 
 function Head({ eyebrow, title, text }: { eyebrow: string; title: string; text?: string }) {
@@ -65,12 +65,7 @@ function SolutionCard({
   chips?: string[];
 }) {
   return (
-    <a
-      href={href}
-      target="_blank"
-      rel="noopener noreferrer"
-      className="sc-card group flex h-full flex-col p-7"
-    >
+    <Link href={href} className="sc-card group flex h-full flex-col p-7">
       <span className="sc-icon">
         <Icon className="h-6 w-6" strokeWidth={1.75} />
       </span>
@@ -87,7 +82,7 @@ function SolutionCard({
         Дэлгэрэнгүй
         <ArrowUpRight className="h-4 w-4 transition group-hover:-translate-y-0.5 group-hover:translate-x-0.5" />
       </span>
-    </a>
+    </Link>
   );
 }
 
@@ -212,7 +207,7 @@ export default function Home() {
               Icon={CreditCard}
               title="Төлбөр тооцоо"
               text="Аюулгүй, хялбар төлбөр тооцооны боломжийг нээнэ"
-              href="https://smrt.mn/homepage/solution/payment/"
+              href="/solution/payment"
               chips={["Төвлөрсөн карт хэвлэл", "Шуурхай хэвлэл", "Киоск", "Аюулгүй гүйлгээ, токен", "Дижитал карт", "Картын бэлдэц"]}
             />
           </Reveal>
@@ -221,7 +216,7 @@ export default function Home() {
               Icon={Fingerprint}
               title="Цахим бүртгэл, аюулгүй байдал"
               text="Дэлхийн улс орнуудын засгийн газруудад итгэгдсэн шийдэл"
-              href="https://smrt.mn/homepage/solution/digital-identity/"
+              href="/solution/digital-identity"
             />
           </Reveal>
           <Reveal delay={0.2} className="lg:col-span-2">
@@ -229,7 +224,7 @@ export default function Home() {
               Icon={ShieldCheck}
               title="Биет аюулгүй байдлын бүтээгдэхүүн"
               text="Аюулгүй байдлын хамгийн орчин үеийн цогц шийдэл"
-              href="https://smrt.mn/homepage/solution/physical-security/"
+              href="/solution/physical-security"
             />
           </Reveal>
         </div>
@@ -251,14 +246,12 @@ export default function Home() {
                 Санхүүгийн байгууллага хэрэглэгчиддээ илүү хурдан шуурхай, өндөр чанартай,
                 тусгайлсан картыг ердөө хоёрхон минутанд хэвлэх боломжтой боллоо.
               </p>
-              <a
-                href="https://smrt.mn/homepage/solution/payment/issuance/instant-issuance/"
-                target="_blank"
-                rel="noopener noreferrer"
+              <Link
+                href="/solution/payment/issuance/instant-issuance"
                 className="sc-btn sc-btn-on-dark mt-7"
               >
                 Дэлгэрэнгүй <ArrowUpRight className="h-4 w-4" />
-              </a>
+              </Link>
             </div>
 
             <ul className="space-y-3">
@@ -291,15 +284,15 @@ export default function Home() {
           text="Банк санхүү, төрийн үйлчилгээ, мэдээллийн технологи, харилцаа холбооны салбарт төлбөрийн карт, биет болон цахим бичиг баримт, бүртгэл-баталгаажуулалт, аюулгүй байдлын шийдлийн цогцыг санал болгодог."
         />
         <div className="mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-          {industries.map(({ Icon, title, text }, i) => (
+          {industries.map(({ Icon, title, text, href }, i) => (
             <Reveal key={title} delay={(i % 3) * 0.1} className="h-full">
-              <div className="sc-card sc-card-hover h-full p-6">
+              <Link href={href} className="sc-card sc-card-hover block h-full p-6">
                 <span className="sc-icon">
                   <Icon className="h-6 w-6" strokeWidth={1.75} />
                 </span>
                 <h3 className="mt-4 text-lg font-bold">{title}</h3>
                 <p className="u-soft mt-1.5 text-[15px] leading-relaxed">{text}</p>
-              </div>
+              </Link>
             </Reveal>
           ))}
         </div>
@@ -338,16 +331,14 @@ export default function Home() {
               </p>
               <div className="mt-6 grid grid-cols-2 gap-4">
                 {partners.map((p) => (
-                  <a
+                  <Link
                     key={p.name}
                     href={p.href}
-                    target="_blank"
-                    rel="noopener noreferrer"
                     className="sc-card sc-card-hover flex h-20 items-center justify-center text-xl font-extrabold tracking-wide"
                     style={{ boxShadow: "none", background: "var(--surface-2)" }}
                   >
                     {p.name}
-                  </a>
+                  </Link>
                 ))}
               </div>
             </div>

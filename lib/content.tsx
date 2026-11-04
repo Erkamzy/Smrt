@@ -12,14 +12,14 @@ export const solutions = [
     icon: "🪪",
     title: "Цахим бүртгэл, аюулгүй байдал",
     text: "Дэлхийн улс орнуудын засгийн газруудад итгэгдсэн шийдэл",
-    href: "https://smrt.mn/homepage/solution/digital-identity/",
+    href: "/solution/digital-identity",
     items: [],
   },
   {
     icon: "💳",
     title: "Төлбөр тооцоо",
     text: "Аюулгүй, хялбар төлбөр тооцооны боломжийг нээнэ",
-    href: "https://smrt.mn/homepage/solution/payment/",
+    href: "/solution/payment",
     items: [
       "Төвлөрсөн карт хэвлэл",
       "Картын шуурхай хэвлэл",
@@ -33,7 +33,7 @@ export const solutions = [
     icon: "🔐",
     title: "Биет аюулгүй байдлын бүтээгдэхүүн",
     text: "Аюулгүй байдлын хамгийн орчин үеийн цогц шийдэл",
-    href: "https://smrt.mn/homepage/solution/physical-security/",
+    href: "/solution/physical-security",
     items: [],
   },
 ];
@@ -48,6 +48,6 @@ export const industries = [
 ];
 
 export const partners = [
-  { name: "Thales", href: "https://www.thalesgroup.com/en" },
-  { name: "Entrust", href: "https://www.entrust.com" },
+  { name: "Thales", href: "/partners/thales" },
+  { name: "Entrust", href: "/partners/entrust" },
 ];
