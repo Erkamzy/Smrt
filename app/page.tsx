@@ -137,13 +137,16 @@ export default function Home() {
             aria-hidden="true"
           >
             <div
-              className="absolute left-0 top-6 aspect-[1.6] w-[82%] -rotate-6 rounded-2xl bg-gradient-to-br from-[#38207a] to-[#1a0b3d]"
-              style={{ boxShadow: "var(--shadow)" }}
+              className="sc-glass absolute left-0 top-6 aspect-[1.6] w-[82%] -rotate-6 rounded-2xl"
             />
             <div
               className="absolute right-0 top-28 flex aspect-[1.6] w-[86%] rotate-3 flex-col justify-between rounded-2xl bg-gradient-to-br from-[#9440c4] via-[#7b2fa8] to-[#2e1a66] p-6 text-white"
-              style={{ boxShadow: "var(--shadow)", border: "1px solid rgba(255,255,255,0.25)" }}
+              style={{ boxShadow: "0 30px 60px -20px rgba(76,29,149,0.6), inset 0 1px 0 rgba(255,255,255,0.45)", border: "1px solid rgba(255,255,255,0.3)" }}
             >
+              <span
+                className="pointer-events-none absolute inset-0 rounded-2xl"
+                style={{ background: "linear-gradient(125deg, rgba(255,255,255,0.35) 0%, rgba(255,255,255,0.08) 32%, transparent 52%)" }}
+              />
               <div className="flex items-start justify-between">
                 <div className="h-9 w-12 rounded-md" style={{ background: "#e4d7f7" }} />
                 <span className="text-xs font-bold tracking-[0.2em]">SMARTCARD</span>

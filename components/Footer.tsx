@@ -12,7 +12,7 @@ export default function Footer() {
   }, []);
 
   return (
-    <footer className="u-soft border-t border-[var(--line)] bg-[var(--bg-alt)] px-6 py-12">
+    <footer className="sc-glass u-soft !rounded-none !border-x-0 !border-b-0 px-6 py-12">
       <div className="mx-auto grid max-w-6xl gap-8 text-sm md:grid-cols-3">
         <div>
           <p className="u-fg text-base font-bold">{company.name}</p>

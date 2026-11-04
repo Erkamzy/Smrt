@@ -66,15 +66,17 @@ export default function Navbar() {
   return (
     <header
       style={{ "--delay": "0s" } as React.CSSProperties}
-      className={`animate-slide-down fixed inset-x-0 top-0 z-50 transition-all duration-300 ${
-        scrolled || open ? "sc-nav-solid" : "bg-transparent"
-      }`}
+      className="animate-slide-down fixed inset-x-0 top-0 z-50 px-3 pt-3 sm:px-4"
     >
-      <nav className="mx-auto flex max-w-6xl items-center justify-between px-6 py-3">
+      <nav
+        className={`mx-auto flex max-w-6xl items-center justify-between rounded-full border py-2 pl-2 pr-3 transition-all duration-500 ${
+          scrolled || open ? "sc-nav-glass" : "border-transparent"
+        }`}
+      >
         <Link
           href="/"
           onClick={(e) => handleClick(e, "/")}
-          className="sc-logo-pill flex h-11 items-center rounded-xl bg-white px-3 shadow-sm ring-1 ring-black/5"
+          className="sc-logo-pill flex h-11 items-center rounded-full bg-white/90 px-4 shadow-sm ring-1 ring-white/60"
         >
           {/* Харанхуй горимд цагаан лого руу солигдоно (globals.css: .sc-logo-*) */}
           <Image src="/logo/smartcard-color.png" alt="Smartcard" width={640} height={139} priority className="sc-logo-light h-8 w-auto" />
@@ -123,14 +125,14 @@ export default function Navbar() {
 
       {/* Утасны цэс */}
       {open && (
-        <ul className="flex flex-col gap-1 px-6 pb-4 lg:hidden">
+        <ul className="sc-nav-glass mx-auto mt-2 flex max-w-6xl flex-col gap-1 rounded-3xl p-3 lg:hidden">
           {links.map((link) => (
             <li key={link.href}>
               <Link
                 href={link.href}
                 onClick={(e) => handleClick(e, link.href)}
-                className={`block rounded-lg px-3 py-3 transition hover:bg-[var(--surface-2)] ${
-                  isActive(link.href) ? "u-fg bg-[var(--surface-2)]" : "u-soft"
+                className={`block rounded-2xl px-4 py-3 transition hover:bg-[var(--glass-bg)] ${
+                  isActive(link.href) ? "u-fg bg-[var(--glass-bg)]" : "u-soft"
                 }`}
               >
                 {link.label}
