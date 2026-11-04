@@ -7,6 +7,7 @@ export type News = {
   date: string;
   image?: string;
   url?: string; // нэмсэн
+  translated?: boolean;
 };
 
 export const newsList: News[] = [
