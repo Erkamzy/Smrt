@@ -1,6 +1,7 @@
 import { XMLParser } from "fast-xml-parser";
 import { cacheLife } from "next/cache";
 import type { News } from "@/lib/news";
+import { translateTexts } from "@/lib/translate";
 
 const xml = new XMLParser({ ignoreAttributes: false, attributeNamePrefix: "@_" });
 const HEADERS = { "User-Agent": "Mozilla/5.0 (compatible; SmartcardBot/1.0)" };
@@ -144,12 +145,33 @@ export async function getRssNews(
   }
 }
 
+// Англи feed-ийг татаад MyMemory-оор монгол руу орчуулна.
+// Орчуулга амжилтгүй бол англиар харуулахгүйн тулд энэ feed-ийг алгасна.
+async function getTranslatedRss(feedUrl: string, category: string, limit = 6): Promise<News[]> {
+  const list = (await getRssNews(feedUrl, category)).slice(0, limit);
+  if (list.length === 0) return [];
+  try {
+    const tr = await translateTexts(list.map((n) => ({ title: n.title, summary: n.summary })));
+    return list.map((n, i) => ({
+      ...n,
+      title: tr[i].title,
+      summary: tr[i].summary,
+      content: [tr[i].summary],
+      translated: true,
+    }));
+  } catch (err) {
+    console.error("Орчуулгын алдаа:", feedUrl, err);
+    return [];
+  }
+}
+
 export async function getAllNews(): Promise<News[]> {
   "use cache";
   cacheLife("hours");
 
   const results = await Promise.all([
     getRssNews("https://mddic.gov.mn/mn/feed/", "Цахим хөгжил"),
+    getTranslatedRss("https://www.technologyreview.com/feed", "Дэлхийн технологи"),
   ]);
 
   return results
