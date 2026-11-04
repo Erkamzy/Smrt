@@ -74,11 +74,12 @@ export default function Navbar() {
         <Link
           href="/"
           onClick={(e) => handleClick(e, "/")}
-          className="sc-logo-pill rounded-xl bg-white px-3 py-1.5 shadow-sm ring-1 ring-black/5"
+          className="sc-logo-pill flex h-11 items-center rounded-xl bg-white px-3 shadow-sm ring-1 ring-black/5"
         >
           {/* Харанхуй горимд цагаан лого руу солигдоно (globals.css: .sc-logo-*) */}
-          <Image src="/logo/smartcard-color.png" alt="Smartcard" width={368} height={86} priority className="sc-logo-light h-8 w-auto" />
-          <Image src="/logo/smartcard-white.png" alt="" aria-hidden width={368} height={86} priority className="sc-logo-dark h-8 w-auto" />
+          <Image src="/logo/smartcard-color.png" alt="Smartcard" width={640} height={139} priority className="sc-logo-light h-8 w-auto" />
+          {/* Цагаан лого tagline-гүй тул "Smartcard" үсгийн хэмжээ ижил байхаар намхан */}
+          <Image src="/logo/smartcard-white.png" alt="" aria-hidden width={640} height={92} priority className="sc-logo-dark h-[21px] w-auto" />
         </Link>
 
         <div className="flex items-center gap-3">

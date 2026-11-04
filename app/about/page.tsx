@@ -47,10 +47,10 @@ export default function AboutPage() {
 
         <div style={dl(0.15)} className="animate-fade-up sc-card flex items-center justify-center bg-white p-10">
           <Image
-            src="/image002.png"
+            src="/logo/smartcard-color.png"
             alt="Smartcard"
-            width={620}
-            height={200}
+            width={640}
+            height={139}
             className="h-auto w-full max-w-sm"
           />
         </div>

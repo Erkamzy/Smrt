@@ -63,7 +63,7 @@ export const partners: { name: string; logo: string; href?: string }[] = [
 export const localPartners: { name: string; logo: string }[] = [
   { name: "Монгол Улсын Засгийн газар", logo: "/partners/mn/government.png" },
   { name: "Улсын бүртгэлийн ерөнхий газар", logo: "/partners/mn/civil-registration.png" },
-  { name: "Улаанбаатар хот", logo: "/partners/mn/ulaanbaatar.webp" },
+  { name: "Нийслэлийн Засаг даргын Тамгын газар", logo: "/partners/mn/ulaanbaatar.webp" },
   { name: "Чингис Хаан үндэсний музей", logo: "/partners/mn/chinggis-khaan-museum.webp" },
   { name: "Хаан банк", logo: "/partners/mn/khan-bank.png" },
   { name: "Голомт банк", logo: "/partners/mn/golomt-bank.png" },
