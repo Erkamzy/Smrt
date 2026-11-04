@@ -56,4 +56,20 @@ export const partners: { name: string; logo: string; href?: string }[] = [
   { name: "APC", logo: "/partners/apc.webp" },
   { name: "Sargent & Greenleaf", logo: "/partners/sargent-greenleaf.png" },
   { name: "CIM", logo: "/partners/cim.png" },
+  { name: "Brink's", logo: "/partners/brinks.png" },
+];
+
+// Монголын хамтрагч байгууллагууд (лого: public/partners/mn/)
+export const localPartners: { name: string; logo: string }[] = [
+  { name: "Монгол Улсын Засгийн газар", logo: "/partners/mn/government.png" },
+  { name: "Улсын бүртгэлийн ерөнхий газар", logo: "/partners/mn/civil-registration.png" },
+  { name: "Улаанбаатар хот", logo: "/partners/mn/ulaanbaatar.webp" },
+  { name: "Чингис Хаан үндэсний музей", logo: "/partners/mn/chinggis-khaan-museum.webp" },
+  { name: "Хаан банк", logo: "/partners/mn/khan-bank.png" },
+  { name: "Голомт банк", logo: "/partners/mn/golomt-bank.png" },
+  { name: "Худалдаа хөгжлийн банк", logo: "/partners/mn/tdb.png" },
+  { name: "Төрийн банк", logo: "/partners/mn/state-bank.png" },
+  { name: "Богд банк", logo: "/partners/mn/bogd-bank.png" },
+  { name: "Чингис Хаан банк", logo: "/partners/mn/chinggis-khaan-bank.png" },
+  { name: "М банк", logo: "/partners/mn/m-bank.png" },
 ];

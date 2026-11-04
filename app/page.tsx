@@ -22,7 +22,7 @@ import ContactForm from "@/components/ContactForm";
 import Counter from "@/components/Counter";
 import LatestNews from "@/components/LatestNews";
 import Reveal from "@/components/Reveal";
-import { company, partners } from "@/lib/content";
+import { company, localPartners, partners } from "@/lib/content";
 
 const d = (s: number) => ({ "--delay": `${s}s` } as React.CSSProperties);
 
@@ -353,6 +353,30 @@ export default function Home() {
             </div>
           </Reveal>
         </div>
+      </section>
+
+      {/* ===== Монголын хамтрагчид ===== */}
+      <section id="clients" className="relative mx-auto max-w-6xl px-6 pb-24">
+        <Head
+          eyebrow="Монголын хамтрагчид"
+          title="Хамтран ажилладаг байгууллагууд"
+          text="Төрийн байгууллагууд болон тэргүүлэх банкуудтай олон жил хамтран ажиллаж байна."
+        />
+        <Reveal>
+          <div className="mt-12 grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-6">
+            {localPartners.map((p) => (
+              <div
+                key={p.name}
+                title={p.name}
+                className="flex h-24 items-center justify-center rounded-2xl bg-white p-4 ring-1 ring-[var(--line)]"
+              >
+                <span className="relative block h-full w-full">
+                  <Image src={p.logo} alt={p.name} fill sizes="180px" className="object-contain" />
+                </span>
+              </div>
+            ))}
+          </div>
+        </Reveal>
       </section>
 
       {/* ===== Мэдээ ===== */}
