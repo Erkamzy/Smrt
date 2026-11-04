@@ -74,15 +74,11 @@ export default function Navbar() {
         <Link
           href="/"
           onClick={(e) => handleClick(e, "/")}
-          className="rounded-xl bg-white px-3 py-1.5 shadow-sm ring-1 ring-black/5"
+          className="sc-logo-pill rounded-xl bg-white px-3 py-1.5 shadow-sm ring-1 ring-black/5"
         >
-          <Image
-            src="/image002.png"
-            alt="Smartcard"
-            width={620}
-            height={200}
-            className="h-8 w-auto"
-          />
+          {/* Харанхуй горимд цагаан лого руу солигдоно (globals.css: .sc-logo-*) */}
+          <Image src="/logo/smartcard-color.png" alt="Smartcard" width={368} height={86} priority className="sc-logo-light h-8 w-auto" />
+          <Image src="/logo/smartcard-white.png" alt="" aria-hidden width={368} height={86} priority className="sc-logo-dark h-8 w-auto" />
         </Link>
 
         <div className="flex items-center gap-3">

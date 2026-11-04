@@ -244,3 +244,8 @@ section[id] {
     background-size: 100% auto;
   }
 }
+/* ========== Лого: харанхуй горимд цагаан хувилбар ========== */
+.sc-logo-dark { display: none; }
+html.dark .sc-logo-light { display: none; }
+html.dark .sc-logo-dark { display: block; }
+html.dark .sc-logo-pill { background: transparent; box-shadow: none; }

@@ -1,3 +1,4 @@
+import Image from "next/image";
 import Link from "next/link";
 import { Suspense } from "react";
 import {
@@ -124,7 +125,7 @@ export default function Home() {
             </div>
 
             <p style={d(0.36)} className="u-soft animate-fade-up mt-8 text-sm">
-              {partners.map((p) => p.name).join(", ")} зэрэг дэлхийн тэргүүлэгч
+              {partners.slice(0, 3).map((p) => p.name).join(", ")} зэрэг дэлхийн тэргүүлэгч
               компаниудын албан ёсны түнш
             </p>
           </div>
@@ -329,17 +330,25 @@ export default function Home() {
                 компаниудын Монгол Улс дахь албан ёсны төлөөлөгчөөр сүүлийн 20 гаруй жил
                 хамтран ажиллаж байна.
               </p>
-              <div className="mt-6 grid grid-cols-2 gap-4">
-                {partners.map((p) => (
-                  <Link
-                    key={p.name}
-                    href={p.href}
-                    className="sc-card sc-card-hover flex h-20 items-center justify-center text-xl font-extrabold tracking-wide"
-                    style={{ boxShadow: "none", background: "var(--surface-2)" }}
-                  >
-                    {p.name}
-                  </Link>
-                ))}
+              <div className="mt-6 grid grid-cols-2 gap-3 sm:grid-cols-3">
+                {partners.map((p) => {
+                  const logo = (
+                    <span className="relative block h-full w-full">
+                      <Image src={p.logo} alt={p.name} fill sizes="160px" className="object-contain" />
+                    </span>
+                  );
+                  const cls =
+                    "flex h-20 items-center justify-center rounded-2xl bg-white p-4 ring-1 ring-[var(--line)] transition";
+                  return p.href ? (
+                    <Link key={p.name} href={p.href} title={p.name} className={`${cls} hover:-translate-y-0.5 hover:shadow-md`}>
+                      {logo}
+                    </Link>
+                  ) : (
+                    <div key={p.name} title={p.name} className={cls}>
+                      {logo}
+                    </div>
+                  );
+                })}
               </div>
             </div>
           </Reveal>

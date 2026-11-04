@@ -47,7 +47,13 @@ export const industries = [
   { icon: "🛍️", title: "Худалдаа, үйлчилгээ", text: "Гишүүнчлэл, хөнгөлөлтийн карт, интернет төлбөр тооцооны шийдэл" },
 ];
 
-export const partners = [
-  { name: "Thales", href: "/partners/thales" },
-  { name: "Entrust", href: "/partners/entrust" },
+// Гадаадын хамтрагчид (лого: public/partners/). href байгаа нь сайтын дотоод хуудастай.
+export const partners: { name: string; logo: string; href?: string }[] = [
+  { name: "Thales", logo: "/partners/thales.png", href: "/partners/thales" },
+  { name: "Entrust", logo: "/partners/entrust.png", href: "/partners/entrust" },
+  { name: "Diebold Nixdorf", logo: "/partners/diebold-nixdorf.webp" },
+  { name: "Hewlett Packard Enterprise", logo: "/partners/hpe.png" },
+  { name: "APC", logo: "/partners/apc.webp" },
+  { name: "Sargent & Greenleaf", logo: "/partners/sargent-greenleaf.png" },
+  { name: "CIM", logo: "/partners/cim.png" },
 ];
