@@ -1,9 +1,10 @@
 import type { NextConfig } from "next";
 
 // Supabase Storage-ийн зураг (мэдээний зураг)
-const supabaseHost = process.env.NEXT_PUBLIC_SUPABASE_URL
-  ? new URL(process.env.NEXT_PUBLIC_SUPABASE_URL).hostname
-  : null;
+// URL буруу бол (жишээ нь key андуурч бичсэн) config унахгүйн тулд алгасна
+const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
+const supabaseHost =
+  supabaseUrl && URL.canParse(supabaseUrl) ? new URL(supabaseUrl).hostname : null;
 
 const nextConfig: NextConfig = {
   cacheComponents: true,

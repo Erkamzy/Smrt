@@ -8,6 +8,7 @@ import Footer from "@/components/Footer";
 import HashScroll from "@/components/HashScroll";
 import ScrollToTop from "@/components/ScrollToTop";
 import ScrollProgress from "@/components/ScrollProgress";
+import ChatWidget from "@/components/ChatWidget";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -48,6 +49,7 @@ export default function RootLayout({
         <Footer />
         <ScrollToTop />
         <ScrollProgress />
+        <ChatWidget />
       </body>
     </html>
   );

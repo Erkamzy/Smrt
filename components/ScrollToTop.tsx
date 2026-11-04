@@ -16,7 +16,7 @@ export default function ScrollToTop() {
     <button
       onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
       aria-label="Хуудасны эхлэл рүү буцах"
-      className={`fixed bottom-6 right-6 z-40 flex h-12 w-12 items-center justify-center rounded-full bg-[#7B2FA8] text-white shadow-lg shadow-purple-950/50 ring-2 ring-white/20 transition-all duration-300 hover:scale-110 hover:bg-[#9440C4] active:scale-95 ${
+      className={`fixed bottom-24 right-7 z-40 flex h-12 w-12 items-center justify-center rounded-full bg-[#7B2FA8] text-white shadow-lg shadow-purple-950/50 ring-2 ring-white/20 transition-all duration-300 hover:scale-110 hover:bg-[#9440C4] active:scale-95 ${
         show
           ? "translate-y-0 opacity-100"
           : "pointer-events-none translate-y-4 opacity-0"
