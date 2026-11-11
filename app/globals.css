@@ -388,6 +388,103 @@ section[id] {
     background-size: 100% auto;
   }
 }
+/* ========== Анхаарал татах эффектүүд ========== */
+/* Layer дотор байрлуулснаар Tailwind-ийн utility класс (opacity-25, absolute г.м.) давамгайлж чадна */
+@layer components {
+
+/* Хулгана очиход картын хүрээ өнгөт градиентаар гэрэлтэнэ */
+.sc-glow { position: relative; }
+.sc-glow::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  padding: 1.5px;
+  background: linear-gradient(135deg, #a855f7, #ec4899 35%, #6366f1 70%, #a855f7);
+  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  opacity: 0;
+  transition: opacity 0.4s ease;
+  pointer-events: none;
+}
+.sc-glow:hover::before,
+.sc-glow:focus-visible::before { opacity: 1; }
+
+/* Ард аажуухан эргэлдэх өнгөт туяа */
+.sc-halo {
+  position: absolute;
+  border-radius: 9999px;
+  background: conic-gradient(from 0deg, #a855f7, #ec4899, #6366f1, #22d3ee, #a855f7);
+  filter: blur(70px);
+  opacity: 0.45;
+  animation: sc-spin 22s linear infinite;
+  pointer-events: none;
+}
+html.dark .sc-halo { opacity: 0.55; }
+@keyframes sc-spin { to { transform: rotate(360deg); } }
+
+/* Хулганаар хөдөлгөхөд 3D-ээр хазайх карт (components/TiltCard.tsx) */
+.sc-tilt { perspective: 1000px; }
+.sc-tilt-inner {
+  position: relative;
+  transform-style: preserve-3d;
+  transform: rotateX(var(--rx, 0deg)) rotateY(var(--ry, 0deg));
+  transition: transform 0.5s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.sc-tilt[data-active] .sc-tilt-inner { transition-duration: 0.08s; }
+.sc-tilt-glare {
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: radial-gradient(circle at var(--gx, 50%) var(--gy, 0%), rgba(255, 255, 255, 0.45), transparent 55%);
+  opacity: 0;
+  transition: opacity 0.4s ease;
+  pointer-events: none;
+}
+.sc-tilt[data-active] .sc-tilt-glare { opacity: 1; }
+
+/* Лого тасралтгүй гулсах тууз */
+.sc-marquee {
+  overflow: hidden;
+  -webkit-mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent);
+  mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent);
+}
+.sc-marquee-track {
+  display: flex;
+  width: max-content;
+  animation: sc-marquee var(--duration, 40s) linear infinite;
+}
+.sc-marquee-track > * { margin-right: 1rem; }
+.sc-marquee[data-reverse] .sc-marquee-track { animation-direction: reverse; }
+.sc-marquee:hover .sc-marquee-track { animation-play-state: paused; }
+@keyframes sc-marquee { to { transform: translateX(-50%); } }
+
+/* Өнгөт дэвсгэр дээрх карт (холбоо барих форм): тунгалаг биш, уншихад тод */
+.sc-solid .sc-card { background-color: var(--surface); }
+
+/* Анивчих цэг (амьд байгааг илтгэнэ) */
+.sc-pulse { position: relative; }
+.sc-pulse::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: inherit;
+  animation: sc-ping 2s cubic-bezier(0, 0, 0.2, 1) infinite;
+}
+@keyframes sc-ping { 75%, 100% { transform: scale(2.6); opacity: 0; } }
+
+@media (prefers-reduced-motion: reduce) {
+  .sc-halo, .sc-pulse::after { animation: none; }
+  .sc-marquee-track { animation: none; flex-wrap: wrap; width: auto; justify-content: center; row-gap: 1rem; }
+  .sc-marquee-track > [aria-hidden="true"] { display: none; }
+  .sc-marquee { -webkit-mask-image: none; mask-image: none; }
+  .sc-tilt-inner { transform: none; }
+}
+
+}
+
 /* ========== Лого: харанхуй горимд цагаан хувилбар ========== */
 .sc-logo-dark { display: none; }
 html.dark .sc-logo-light { display: none; }

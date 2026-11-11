@@ -4,34 +4,44 @@ import { Suspense } from "react";
 import {
   ArrowRight,
   ArrowUpRight,
+  Award,
   Building2,
+  CalendarDays,
   Check,
   Cpu,
   CreditCard,
   Fingerprint,
   Landmark,
+  Layers,
+  LifeBuoy,
+  Lightbulb,
   Mail,
+  MessagesSquare,
   Mountain,
   Phone,
   RadioTower,
+  Rocket,
   ShieldCheck,
   ShoppingBag,
+  Sparkles,
   type LucideIcon,
 } from "lucide-react";
 import ContactForm from "@/components/ContactForm";
 import Counter from "@/components/Counter";
 import LatestNews from "@/components/LatestNews";
+import LogoMarquee from "@/components/LogoMarquee";
 import Reveal from "@/components/Reveal";
+import TiltCard from "@/components/TiltCard";
 import { company, localPartners, partners } from "@/lib/content";
 
 const d = (s: number) => ({ "--delay": `${s}s` } as React.CSSProperties);
 
-const stats = [
-  { text: String(company.founded), label: "Байгуулагдсан он" },
-  { to: 25, suffix: "+", label: "Жилийн туршлага" },
-  { to: 6, label: "Мэргэшсэн салбар" },
-  { to: 3, label: "Шийдлийн чиглэл" },
-] as { text?: string; to?: number; suffix?: string; label: string }[];
+const stats: { Icon: LucideIcon; text?: string; to?: number; suffix?: string; label: string }[] = [
+  { Icon: CalendarDays, text: String(company.founded), label: "Байгуулагдсан он" },
+  { Icon: Award, to: 25, suffix: "+", label: "Жилийн туршлага" },
+  { Icon: Layers, to: 6, label: "Мэргэшсэн салбар" },
+  { Icon: Sparkles, to: 3, label: "Шийдлийн чиглэл" },
+];
 
 const industries: { Icon: LucideIcon; title: string; text: string; href: string }[] = [
   { Icon: Landmark, title: "Банк санхүү", text: "Төлбөрийн карт хэвлэл, бэлдэц, аюулгүй төлбөр тооцооны шийдэл", href: "/industry/financial" },
@@ -42,12 +52,42 @@ const industries: { Icon: LucideIcon; title: string; text: string; href: string 
   { Icon: ShoppingBag, title: "Худалдаа, үйлчилгээ", text: "Гишүүнчлэл, хөнгөлөлтийн карт, интернет төлбөр тооцооны шийдэл", href: "/industry/retail" },
 ];
 
-function Head({ eyebrow, title, text }: { eyebrow: string; title: string; text?: string }) {
+const steps: { Icon: LucideIcon; title: string; text: string }[] = [
+  { Icon: MessagesSquare, title: "Зөвлөгөө", text: "Танай байгууллагын хэрэгцээ, одоогийн системийг судална." },
+  { Icon: Lightbulb, title: "Шийдэл", text: "Дэлхийн тэргүүлэх хамтрагчдын технологиос тохирохыг санал болгоно." },
+  { Icon: Rocket, title: "Нэвтрүүлэлт", text: "Төхөөрөмж, программыг суурилуулж, ажилтнуудыг сургана." },
+  { Icon: LifeBuoy, title: "Дэмжлэг", text: "Нэвтрүүлсний дараа ч засвар үйлчилгээ, техникийн дэмжлэг үзүүлнэ." },
+];
+
+function Head({
+  eyebrow,
+  title,
+  highlight,
+  text,
+  center = false,
+}: {
+  eyebrow: string;
+  title: string;
+  highlight?: string;
+  text?: string;
+  center?: boolean;
+}) {
   return (
-    <div className="max-w-3xl">
-      <p className="sc-eyebrow">{eyebrow}</p>
-      <h2 className="mt-3 text-3xl font-extrabold tracking-tight sm:text-4xl">{title}</h2>
-      {text && <p className="u-soft mt-4 text-lg leading-relaxed">{text}</p>}
+    <div className={center ? "mx-auto max-w-3xl text-center" : "max-w-3xl"}>
+      <p className={`sc-eyebrow inline-flex items-center gap-2 ${center ? "justify-center" : ""}`}>
+        <span className="h-px w-6 bg-current opacity-60" />
+        {eyebrow}
+      </p>
+      <h2 className="mt-3 text-3xl font-extrabold tracking-tight sm:text-5xl">
+        {title}
+        {highlight && (
+          <>
+            {" "}
+            <span className="text-gradient">{highlight}</span>
+          </>
+        )}
+      </h2>
+      {text && <p className="u-soft mt-5 text-lg leading-relaxed">{text}</p>}
     </div>
   );
 }
@@ -58,28 +98,40 @@ function SolutionCard({
   text,
   href,
   chips = [],
+  featured = false,
 }: {
   Icon: LucideIcon;
   title: string;
   text: string;
   href: string;
   chips?: string[];
+  featured?: boolean;
 }) {
   return (
-    <Link href={href} className="sc-card group flex h-full flex-col p-7">
-      <span className="sc-icon">
+    <Link href={href} className="sc-card sc-glow group relative flex h-full flex-col overflow-hidden p-7 sm:p-8">
+      {/* Арын том icon */}
+      <Icon
+        aria-hidden="true"
+        strokeWidth={1}
+        className={`pointer-events-none absolute -bottom-6 -right-6 text-[var(--accent)] opacity-[0.07] transition duration-700 group-hover:-rotate-6 group-hover:scale-110 group-hover:opacity-[0.12] ${
+          featured ? "h-64 w-64" : "h-40 w-40"
+        }`}
+      />
+      {featured && <span className="sc-halo -right-24 -top-24 h-64 w-64 opacity-25" />}
+
+      <span className="sc-icon relative transition duration-500 group-hover:scale-110 group-hover:-rotate-6">
         <Icon className="h-6 w-6" strokeWidth={1.75} />
       </span>
-      <h3 className="mt-5 text-xl font-bold">{title}</h3>
-      <p className="u-soft mt-2 text-[15px] leading-relaxed">{text}</p>
+      <h3 className={`relative mt-5 font-bold ${featured ? "text-2xl sm:text-3xl" : "text-xl"}`}>{title}</h3>
+      <p className="u-soft relative mt-2 text-[15px] leading-relaxed">{text}</p>
       {chips.length > 0 && (
-        <div className="mt-5 flex flex-wrap gap-2">
+        <div className="relative mt-6 flex flex-wrap gap-2">
           {chips.map((c) => (
             <span key={c} className="sc-chip">{c}</span>
           ))}
         </div>
       )}
-      <span className="u-accent mt-auto flex items-center gap-1 pt-6 text-sm font-semibold">
+      <span className="u-accent relative mt-auto flex items-center gap-1 pt-6 text-sm font-semibold">
         Дэлгэрэнгүй
         <ArrowUpRight className="h-4 w-4 transition group-hover:-translate-y-0.5 group-hover:translate-x-0.5" />
       </span>
@@ -98,16 +150,16 @@ export default function Home() {
           style={{ background: "radial-gradient(closest-side, rgba(148,64,196,0.35), transparent)" }}
         />
 
-        <div className="relative mx-auto grid max-w-6xl items-center gap-14 px-6 pb-24 pt-36 lg:grid-cols-2 lg:pt-40">
+        <div className="relative mx-auto grid max-w-6xl items-center gap-14 px-6 pb-20 pt-36 lg:grid-cols-2 lg:pt-40">
           <div>
             <span style={d(0.05)} className="sc-chip animate-fade-up inline-flex items-center gap-2">
-              <span className="h-1.5 w-1.5 rounded-full" style={{ background: "var(--accent-soft)" }} />
+              <span className="sc-pulse h-2 w-2 rounded-full bg-[#a855f7]" />
               {company.founded} оноос · Digital Identity and Security
             </span>
 
             <h1
               style={d(0.12)}
-              className="animate-fade-up mt-6 text-4xl font-extrabold leading-[1.08] tracking-tight sm:text-6xl"
+              className="animate-fade-up mt-6 text-[2.75rem] font-extrabold leading-[1.04] tracking-tight sm:text-6xl lg:text-7xl"
             >
               Өсөлтийг хурдасгах <span className="text-gradient">дижитал шийдэл</span>
             </h1>
@@ -118,44 +170,70 @@ export default function Home() {
             </p>
 
             <div style={d(0.28)} className="animate-fade-up mt-9 flex flex-wrap gap-4">
-              <a href="#solutions" className="sc-btn sc-btn-primary">
+              <a href="#solutions" className="sc-btn sc-btn-primary px-7 py-4 text-base">
                 Манай шийдэл <ArrowRight className="h-4 w-4" />
               </a>
-              <a href="#contact" className="sc-btn sc-btn-ghost">Холбоо барих</a>
+              <a href="#contact" className="sc-btn sc-btn-ghost px-7 py-4 text-base">Холбоо барих</a>
             </div>
 
-            <p style={d(0.36)} className="u-soft animate-fade-up mt-8 text-sm">
-              {partners.slice(0, 3).map((p) => p.name).join(", ")} зэрэг дэлхийн тэргүүлэгч
-              компаниудын албан ёсны түнш
-            </p>
+            <div style={d(0.36)} className="animate-fade-up mt-10 flex items-center gap-4">
+              <div className="flex -space-x-3">
+                {partners.slice(0, 3).map((p) => (
+                  <span
+                    key={p.name}
+                    title={p.name}
+                    className="relative flex h-11 w-11 items-center justify-center overflow-hidden rounded-full bg-white p-1.5 shadow-md ring-2 ring-[var(--bg)]"
+                  >
+                    <span className="relative block h-full w-full">
+                      <Image src={p.logo} alt={p.name} fill sizes="44px" className="object-contain" />
+                    </span>
+                  </span>
+                ))}
+              </div>
+              <p className="u-soft text-sm leading-snug">
+                <span className="u-fg font-semibold">{partners.slice(0, 3).map((p) => p.name).join(", ")}</span>
+                <br />
+                зэрэг дэлхийн тэргүүлэгчдийн албан ёсны түнш
+              </p>
+            </div>
           </div>
 
-          {/* Бүтээгдэхүүний дүрс (CSS-ээр) */}
-          <div
-            style={d(0.2)}
-            className="animate-fade-up relative mx-auto h-[26rem] w-full max-w-md"
-            aria-hidden="true"
-          >
-            <div
-              className="sc-glass absolute left-0 top-6 aspect-[1.6] w-[82%] -rotate-6 rounded-2xl"
-            />
-            <div
-              className="absolute right-0 top-28 flex aspect-[1.6] w-[86%] rotate-3 flex-col justify-between rounded-2xl bg-gradient-to-br from-[#9440c4] via-[#7b2fa8] to-[#2e1a66] p-6 text-white"
-              style={{ boxShadow: "0 30px 60px -20px rgba(76,29,149,0.6), inset 0 1px 0 rgba(255,255,255,0.45)", border: "1px solid rgba(255,255,255,0.3)" }}
-            >
-              <span
-                className="pointer-events-none absolute inset-0 rounded-2xl"
-                style={{ background: "linear-gradient(125deg, rgba(255,255,255,0.35) 0%, rgba(255,255,255,0.08) 32%, transparent 52%)" }}
-              />
-              <div className="flex items-start justify-between">
-                <div className="h-9 w-12 rounded-md" style={{ background: "#e4d7f7" }} />
-                <span className="text-xs font-bold tracking-[0.2em]">SMARTCARD</span>
+          {/* Бүтээгдэхүүний дүрс (CSS-ээр) — хулганаар хөдөлгөхөд 3D-ээр эргэлдэнэ */}
+          <div style={d(0.2)} className="animate-fade-up relative mx-auto h-[24rem] w-full max-w-md sm:h-[27rem]">
+            <span className="sc-halo left-1/2 top-1/2 h-72 w-72 -translate-x-1/2 -translate-y-1/2" />
+
+            <div className="sc-glass absolute left-0 top-6 aspect-[1.6] w-[82%] -rotate-6 rounded-2xl" aria-hidden="true" />
+
+            <TiltCard className="absolute right-0 top-28 aspect-[1.6] w-[86%] rotate-3 rounded-2xl">
+              <div
+                className="relative flex h-full flex-col justify-between overflow-hidden rounded-2xl bg-gradient-to-br from-[#9440c4] via-[#7b2fa8] to-[#2e1a66] p-6 text-white"
+                style={{ boxShadow: "0 30px 60px -20px rgba(76,29,149,0.6), inset 0 1px 0 rgba(255,255,255,0.45)", border: "1px solid rgba(255,255,255,0.3)" }}
+                aria-hidden="true"
+              >
+                <span
+                  className="pointer-events-none absolute inset-0 rounded-2xl"
+                  style={{ background: "linear-gradient(125deg, rgba(255,255,255,0.35) 0%, rgba(255,255,255,0.08) 32%, transparent 52%)" }}
+                />
+                <span className="sc-tilt-glare" />
+                <div className="relative flex items-start justify-between">
+                  <div
+                    className="h-9 w-12 rounded-md"
+                    style={{ background: "linear-gradient(135deg, #f5e9ff, #c9a8ef)", boxShadow: "inset 0 0 0 1px rgba(76,29,149,0.25)" }}
+                  />
+                  <span className="text-xs font-bold tracking-[0.2em]">SMARTCARD</span>
+                </div>
+                <div className="relative">
+                  <p className="text-lg tracking-[0.22em] tabular-nums">•••• •••• •••• 1998</p>
+                  <div className="mt-1.5 flex items-end justify-between">
+                    <p className="sc-on-dark-accent text-xs">Digital Identity and Security</p>
+                    <span className="flex">
+                      <span className="h-6 w-6 rounded-full bg-white/70" />
+                      <span className="-ml-2.5 h-6 w-6 rounded-full bg-white/35" />
+                    </span>
+                  </div>
+                </div>
               </div>
-              <div>
-                <p className="text-lg tracking-[0.22em] tabular-nums">•••• •••• •••• ••••</p>
-                <p className="sc-on-dark-accent mt-1.5 text-xs">Digital Identity and Security</p>
-              </div>
-            </div>
+            </TiltCard>
 
             <div
               className="sc-card sc-float absolute right-0 top-0 flex items-center gap-3 px-4 py-3"
@@ -184,33 +262,38 @@ export default function Home() {
 
       {/* ===== Тоон үзүүлэлт ===== */}
       <section className="relative mx-auto max-w-6xl px-6">
-        <Reveal>
-          <div className="sc-card sc-divide grid grid-cols-2 md:grid-cols-4">
-            {stats.map((s) => (
-              <div key={s.label} className="p-7 text-center">
-                <div className="u-accent text-4xl font-extrabold tabular-nums">
+        <div className="grid grid-cols-2 gap-4 md:grid-cols-4 md:gap-6">
+          {stats.map(({ Icon, ...s }, i) => (
+            <Reveal key={s.label} delay={i * 0.08} className="h-full">
+              <div className="sc-card sc-glow sc-card-hover h-full p-6 text-center sm:p-7">
+                <span className="sc-icon mx-auto !h-10 !w-10 !rounded-xl">
+                  <Icon className="h-5 w-5" strokeWidth={1.9} />
+                </span>
+                <div className="text-gradient mt-4 text-4xl font-extrabold tabular-nums sm:text-5xl">
                   {s.to !== undefined ? <Counter to={s.to} suffix={s.suffix} /> : s.text}
                 </div>
                 <div className="u-soft mt-1.5 text-sm">{s.label}</div>
               </div>
-            ))}
-          </div>
-        </Reveal>
+            </Reveal>
+          ))}
+        </div>
       </section>
 
       {/* ===== Шийдэл ===== */}
-      <section id="solutions" className="relative mx-auto max-w-6xl px-6 py-24">
+      <section id="solutions" className="relative mx-auto max-w-6xl px-6 py-28">
         <Head
           eyebrow="Шийдэл"
-          title="Манай шийдэл"
+          title="Танай байгууллагад тохирох"
+          highlight="цогц шийдэл"
           text="Бид танай байгууллагыг биет болон дижитал ертөнцөд бүрэн аюулгүй ажиллаж, цахим шилжилтийн боломжийг өсөлт болгон хувиргахад туслах шийдлүүдийг санал болгож байна."
         />
-        <div className="mt-12 grid gap-6 lg:grid-cols-5">
+        <div className="mt-14 grid gap-6 lg:grid-cols-5">
           <Reveal className="lg:col-span-3 lg:row-span-2">
             <SolutionCard
+              featured
               Icon={CreditCard}
               title="Төлбөр тооцоо"
-              text="Аюулгүй, хялбар төлбөр тооцооны боломжийг нээнэ"
+              text="Аюулгүй, хялбар төлбөр тооцооны боломжийг нээнэ. Картын бэлдэцээс эхлээд шуурхай хэвлэл, киоск, дижитал карт хүртэл."
               href="/solution/payment"
               chips={["Төвлөрсөн карт хэвлэл", "Шуурхай хэвлэл", "Киоск", "Аюулгүй гүйлгээ, токен", "Дижитал карт", "Картын бэлдэц"]}
             />
@@ -237,78 +320,128 @@ export default function Home() {
       {/* ===== Онцлох бүтээгдэхүүн ===== */}
       <section className="relative mx-auto max-w-6xl px-6">
         <Reveal>
-          <div className="grid items-center gap-10 rounded-3xl bg-gradient-to-br from-[#2e1a66] via-[#4a1d7a] to-[#7b2fa8] p-8 text-white md:grid-cols-2 md:p-12">
-            <div>
+          <div className="relative grid items-center gap-10 overflow-hidden rounded-[2rem] bg-gradient-to-br from-[#2e1a66] via-[#4a1d7a] to-[#7b2fa8] p-8 text-white shadow-[0_40px_80px_-30px_rgba(76,29,149,0.7)] md:grid-cols-2 md:p-14">
+            <span className="sc-halo -right-32 -top-32 h-96 w-96" />
+            <div className="sc-grid-bg pointer-events-none absolute inset-0 opacity-10" />
+
+            <div className="relative">
               <span
-                className="inline-block rounded-full px-3 py-1 text-xs font-bold tracking-wider"
+                className="inline-flex items-center gap-2 rounded-full px-3 py-1 text-xs font-bold tracking-wider"
                 style={{ background: "rgba(255,255,255,0.16)" }}
               >
-                ОНЦЛОХ БҮТЭЭГДЭХҮҮН
+                <Sparkles className="h-3.5 w-3.5" /> ОНЦЛОХ БҮТЭЭГДЭХҮҮН
               </span>
-              <h2 className="mt-4 text-3xl font-extrabold tracking-tight sm:text-4xl">Entrust Sigma DS4</h2>
+              <h2 className="mt-5 text-4xl font-extrabold tracking-tight sm:text-5xl">Entrust Sigma DS4</h2>
               <p className="sc-on-dark-soft mt-4 text-lg leading-relaxed">
                 Санхүүгийн байгууллага хэрэглэгчиддээ илүү хурдан шуурхай, өндөр чанартай,
                 тусгайлсан картыг ердөө хоёрхон минутанд хэвлэх боломжтой боллоо.
               </p>
               <Link
                 href="/solution/payment/issuance/instant-issuance"
-                className="sc-btn sc-btn-on-dark mt-7"
+                className="sc-btn mt-8 bg-white px-7 py-4 text-[#2e1a66] hover:bg-[#f3ebfd]"
               >
                 Дэлгэрэнгүй <ArrowUpRight className="h-4 w-4" />
               </Link>
             </div>
 
-            <ul className="space-y-3">
-              {[
-                "Өнгөт картыг ердөө 78 секундэд хэвлэнэ",
-                "Төлбөр тооцооны картын бүх стандарт хангасан, өндөр нууцлалтай",
-                "VISA, Mastercard, UnionPay, ₮ картуудыг хэвлэх боломжтой",
-              ].map((t) => (
-                <li
-                  key={t}
-                  className="flex items-start gap-3 rounded-2xl p-4"
-                  style={{ background: "rgba(255,255,255,0.1)", border: "1px solid rgba(255,255,255,0.16)" }}
-                >
-                  <span className="mt-0.5 flex h-6 w-6 shrink-0 items-center justify-center rounded-full" style={{ background: "rgba(255,255,255,0.18)" }}>
-                    <Check className="h-4 w-4" />
-                  </span>
-                  <span className="sc-on-dark-soft">{t}</span>
-                </li>
-              ))}
-            </ul>
+            <div className="relative">
+              <div className="mb-5 flex items-end gap-3">
+                <span className="text-7xl font-extrabold leading-none tracking-tight sm:text-8xl">78</span>
+                <span className="sc-on-dark-soft pb-2 text-lg leading-tight">секундэд<br />өнгөт карт</span>
+              </div>
+              <ul className="space-y-3">
+                {[
+                  "Төлбөр тооцооны картын бүх стандарт хангасан, өндөр нууцлалтай",
+                  "VISA, Mastercard, UnionPay, ₮ картуудыг хэвлэх боломжтой",
+                ].map((t) => (
+                  <li
+                    key={t}
+                    className="flex items-start gap-3 rounded-2xl p-4 backdrop-blur-sm transition hover:bg-white/15"
+                    style={{ background: "rgba(255,255,255,0.1)", border: "1px solid rgba(255,255,255,0.16)" }}
+                  >
+                    <span className="mt-0.5 flex h-6 w-6 shrink-0 items-center justify-center rounded-full" style={{ background: "rgba(255,255,255,0.18)" }}>
+                      <Check className="h-4 w-4" />
+                    </span>
+                    <span className="sc-on-dark-soft">{t}</span>
+                  </li>
+                ))}
+              </ul>
+            </div>
           </div>
         </Reveal>
       </section>
 
       {/* ===== Салбар ===== */}
-      <section id="industries" className="relative mx-auto max-w-6xl px-6 py-24">
+      <section id="industries" className="relative mx-auto max-w-6xl px-6 py-28">
         <Head
           eyebrow="Салбар"
-          title="Мэргэшсэн салбарууд"
+          title="Мэргэшсэн"
+          highlight="салбарууд"
           text="Банк санхүү, төрийн үйлчилгээ, мэдээллийн технологи, харилцаа холбооны салбарт төлбөрийн карт, биет болон цахим бичиг баримт, бүртгэл-баталгаажуулалт, аюулгүй байдлын шийдлийн цогцыг санал болгодог."
         />
-        <div className="mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+        <div className="mt-14 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
           {industries.map(({ Icon, title, text, href }, i) => (
             <Reveal key={title} delay={(i % 3) * 0.1} className="h-full">
-              <Link href={href} className="sc-card sc-card-hover block h-full p-6">
-                <span className="sc-icon">
+              <Link href={href} className="sc-card sc-glow sc-card-hover group flex h-full gap-4 p-6">
+                <span className="sc-icon transition duration-500 group-hover:scale-110 group-hover:-rotate-6">
                   <Icon className="h-6 w-6" strokeWidth={1.75} />
                 </span>
-                <h3 className="mt-4 text-lg font-bold">{title}</h3>
-                <p className="u-soft mt-1.5 text-[15px] leading-relaxed">{text}</p>
+                <div className="min-w-0 flex-1">
+                  <h3 className="flex items-center justify-between gap-2 text-lg font-bold">
+                    {title}
+                    <ArrowUpRight className="u-accent h-4 w-4 shrink-0 -translate-x-1 opacity-0 transition group-hover:translate-x-0 group-hover:opacity-100" />
+                  </h3>
+                  <p className="u-soft mt-1.5 text-[15px] leading-relaxed">{text}</p>
+                </div>
               </Link>
             </Reveal>
           ))}
         </div>
       </section>
 
+      {/* ===== Хэрхэн ажилладаг ===== */}
+      <section className="relative mx-auto max-w-6xl px-6 pb-28">
+        <Head
+          center
+          eyebrow="Хамтын ажиллагаа"
+          title="Санаанаас"
+          highlight="хэрэгжилт хүртэл"
+          text="Шийдлээ сонгохоос эхлээд нэвтрүүлсний дараах дэмжлэг хүртэл бид тантай хамт байна."
+        />
+        <div className="relative mt-16 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+          {/* Алхмуудыг холбох шугам */}
+          <div
+            aria-hidden="true"
+            className="absolute left-[12.5%] right-[12.5%] top-8 hidden h-px lg:block"
+            style={{ background: "linear-gradient(90deg, transparent, var(--accent), #ec4899, var(--accent), transparent)" }}
+          />
+          {steps.map(({ Icon, title, text }, i) => (
+            <Reveal key={title} delay={i * 0.12} className="h-full">
+              <div className="relative flex h-full flex-col items-center text-center">
+                <span className="sc-icon relative z-10 !h-16 !w-16 !rounded-2xl">
+                  <Icon className="h-7 w-7" strokeWidth={1.75} />
+                  <span className="absolute -right-2 -top-2 flex h-6 w-6 items-center justify-center rounded-full bg-white text-xs font-extrabold text-[#7b2fa8] shadow-md">
+                    {i + 1}
+                  </span>
+                </span>
+                <h3 className="mt-5 text-lg font-bold">{title}</h3>
+                <p className="u-soft mt-2 max-w-[16rem] text-[15px] leading-relaxed">{text}</p>
+              </div>
+            </Reveal>
+          ))}
+        </div>
+      </section>
+
       {/* ===== Бидний тухай + Хамтрагчид ===== */}
-      <section id="about" className="relative mx-auto max-w-6xl px-6 pb-24">
+      <section id="about" className="relative mx-auto max-w-6xl px-6 pb-28">
         <div className="grid gap-12 lg:grid-cols-2">
           <Reveal>
-            <p className="sc-eyebrow">Бидний тухай</p>
-            <h2 className="mt-3 text-3xl font-extrabold tracking-tight sm:text-4xl">
-              {company.founded} оноос Монголын зах зээлд
+            <p className="sc-eyebrow inline-flex items-center gap-2">
+              <span className="h-px w-6 bg-current opacity-60" />
+              Бидний тухай
+            </p>
+            <h2 className="mt-3 text-3xl font-extrabold tracking-tight sm:text-5xl">
+              {company.founded} оноос <span className="text-gradient">Монголын зах зээлд</span>
             </h2>
             <p className="u-soft mt-5 text-[17px] leading-relaxed">
               {company.name} нь {company.founded} онд үүсгэн байгуулагдсан бөгөөд төлбөр
@@ -320,8 +453,8 @@ export default function Home() {
               салбарт аюулгүй байдлын шийдэл, төлбөр тооцооны бүтээгдэхүүнийг нийлүүлж,
               Монгол Улсад мэдээллийн технологийн салбарыг хөгжүүлэхэд хувь нэмэр оруулж байна.
             </p>
-            <Link href="/about" className="u-accent mt-6 inline-flex items-center gap-1 font-semibold">
-              Дэлгэрэнгүй <ArrowRight className="h-4 w-4" />
+            <Link href="/about" className="sc-btn sc-btn-ghost mt-8">
+              Бидний тухай дэлгэрэнгүй <ArrowRight className="h-4 w-4" />
             </Link>
           </Reveal>
 
@@ -341,13 +474,13 @@ export default function Home() {
                     </span>
                   );
                   const cls =
-                    "flex h-20 items-center justify-center rounded-2xl bg-white p-4 ring-1 ring-[var(--line)] transition";
+                    "flex h-20 items-center justify-center rounded-2xl bg-white p-4 ring-1 ring-[var(--line)] transition duration-300";
                   return p.href ? (
-                    <Link key={p.name} href={p.href} title={p.name} className={`${cls} hover:-translate-y-0.5 hover:shadow-md`}>
+                    <Link key={p.name} href={p.href} title={p.name} className={`${cls} hover:-translate-y-1 hover:shadow-lg hover:ring-[var(--accent)]`}>
                       {logo}
                     </Link>
                   ) : (
-                    <div key={p.name} title={p.name} className={cls}>
+                    <div key={p.name} title={p.name} className={`${cls} hover:-translate-y-1 hover:shadow-lg`}>
                       {logo}
                     </div>
                   );
@@ -359,34 +492,27 @@ export default function Home() {
       </section>
 
       {/* ===== Монголын хамтрагчид ===== */}
-      <section id="clients" className="relative mx-auto max-w-6xl px-6 pb-24">
-        <Head
-          eyebrow="Монголын хамтрагчид"
-          title="Хамтран ажилладаг байгууллагууд"
-          text="Төрийн байгууллагууд болон тэргүүлэх банкуудтай олон жил хамтран ажиллаж байна."
-        />
-        <Reveal>
-          <div className="mt-12 grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-6">
-            {localPartners.map((p) => (
-              <div
-                key={p.name}
-                title={p.name}
-                className="flex h-24 items-center justify-center rounded-2xl bg-white p-4 ring-1 ring-[var(--line)]"
-              >
-                <span className="relative block h-full w-full">
-                  <Image src={p.logo} alt={p.name} fill sizes="180px" className="object-contain" />
-                </span>
-              </div>
-            ))}
-          </div>
-        </Reveal>
+      <section id="clients" className="relative pb-28">
+        <div className="mx-auto max-w-6xl px-6">
+          <Head
+            center
+            eyebrow="Монголын хамтрагчид"
+            title="Бидэнд итгэдэг"
+            highlight="байгууллагууд"
+            text="Төрийн байгууллагууд болон тэргүүлэх банкуудтай олон жил хамтран ажиллаж байна."
+          />
+        </div>
+        <div className="mx-auto mt-12 max-w-7xl space-y-4">
+          <LogoMarquee items={localPartners.slice(0, 6)} duration={36} />
+          <LogoMarquee items={localPartners.slice(6)} reverse duration={30} />
+        </div>
       </section>
 
       {/* ===== Мэдээ ===== */}
-      <section className="relative mx-auto max-w-6xl px-6 pb-24">
-        <div className="mb-10 flex flex-wrap items-end justify-between gap-4">
-          <Head eyebrow="Мэдээ" title="Технологийн мэдээ" />
-          <Link href="/news" className="u-accent inline-flex items-center gap-1 font-semibold">
+      <section className="relative mx-auto max-w-6xl px-6 pb-28">
+        <div className="mb-12 flex flex-wrap items-end justify-between gap-4">
+          <Head eyebrow="Мэдээ" title="Технологийн" highlight="мэдээ" />
+          <Link href="/news" className="sc-btn sc-btn-ghost">
             Бүгдийг харах <ArrowRight className="h-4 w-4" />
           </Link>
         </div>
@@ -396,11 +522,20 @@ export default function Home() {
       </section>
 
       {/* ===== Холбоо барих ===== */}
-      <section id="contact" className="relative mx-auto max-w-6xl px-6 pb-24">
+      <section id="contact" className="relative mx-auto max-w-6xl px-6 pb-28">
         <Reveal>
-          <div className="grid items-stretch gap-8 rounded-3xl bg-gradient-to-br from-[#5a1f80] to-[#2e1a66] p-8 text-white md:p-12 lg:grid-cols-5">
-            <div className="lg:col-span-2">
-              <h2 className="text-3xl font-extrabold tracking-tight sm:text-4xl">Холбоо барих</h2>
+          <div className="relative grid items-stretch gap-8 overflow-hidden rounded-[2rem] bg-gradient-to-br from-[#5a1f80] via-[#3d1a70] to-[#2e1a66] p-8 text-white shadow-[0_40px_80px_-30px_rgba(76,29,149,0.7)] md:p-12 lg:grid-cols-5">
+            <span className="sc-halo -bottom-40 -left-32 h-96 w-96" />
+            <div className="relative lg:col-span-2">
+              <span
+                className="inline-flex items-center gap-2 rounded-full px-3 py-1 text-xs font-bold tracking-wider"
+                style={{ background: "rgba(255,255,255,0.16)" }}
+              >
+                <span className="sc-pulse h-2 w-2 rounded-full bg-[#4ade80]" /> БИД ТАНЫГ ХҮЛЭЭЖ БАЙНА
+              </span>
+              <h2 className="mt-5 text-4xl font-extrabold tracking-tight sm:text-5xl">
+                Цахим шилжилтээ хамтдаа эхлүүлье
+              </h2>
               <p className="sc-on-dark-soft mt-4 text-lg">
                 Асуулт, санал хүсэлтээ бидэнд илгээгээрэй. Манай мэргэжилтнүүд тантай
                 эргэн холбогдоно.
@@ -414,7 +549,7 @@ export default function Home() {
                 </a>
               </div>
             </div>
-            <div className="u-fg lg:col-span-3">
+            <div className="sc-solid u-fg relative lg:col-span-3">
               <ContactForm />
             </div>
           </div>
