@@ -4,55 +4,54 @@ import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
+import { ArrowUpRight } from "lucide-react";
 import ThemeToggle from "@/components/ThemeToggle";
 
 const links = [
-  { href: "/", label: "Нүүр" },
   { href: "/#solutions", label: "Шийдэл" },
   { href: "/#industries", label: "Салбар" },
+  { href: "/#partners", label: "Хамтрагчид" },
   { href: "/news", label: "Мэдээ" },
   { href: "/about", label: "Бидний тухай" },
-  { href: "/#contact", label: "Холбоо барих" },
 ];
 
 export default function Navbar() {
   const pathname = usePathname();
-  const [open, setOpen] = useState(false);
+  // Цэсийг аль хуудсан дээр нээснийг санана: хуудас солигдоход автоматаар хаагдана
+  const [openOn, setOpenOn] = useState<string | null>(null);
+  const open = openOn === pathname;
+  const setOpen = (v: boolean) => setOpenOn(v ? pathname : null);
   const [scrolled, setScrolled] = useState(false);
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 20);
     onScroll();
-    window.addEventListener("scroll", onScroll);
+    window.addEventListener("scroll", onScroll, { passive: true });
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
-  // Хуудас солигдоход утасны цэсийг хаана
+  // Утасны цэс нээлттэй үед ард гүйлгэхгүй
   useEffect(() => {
-    setOpen(false);
-  }, [pathname]);
+    document.body.style.overflow = open ? "hidden" : "";
+    return () => {
+      document.body.style.overflow = "";
+    };
+  }, [open]);
 
   // "#"-тэй линк идэвхтэй гэж тодрохгүй
   const isActive = (href: string) => {
     if (href.includes("#")) return false;
-    return href === "/" ? pathname === "/" : pathname.startsWith(href);
+    return pathname.startsWith(href);
   };
 
   // "/#contact" гэх мэт хэсэг рүү шилжих линк
-  const handleClick = (
-    e: React.MouseEvent<HTMLAnchorElement>,
-    href: string
-  ) => {
+  const handleClick = (e: React.MouseEvent<HTMLAnchorElement>, href: string) => {
     if (pathname !== "/") return; // Өөр хуудсанд байвал Next.js нүүр рүү аваачна, HashScroll гүйлгэнэ
 
     const i = href.indexOf("#");
-
     if (i !== -1) {
       e.preventDefault();
-      const id = href.slice(i + 1);
-      document
-        .getElementById(id)
-        ?.scrollIntoView({ behavior: "smooth", block: "start" });
+      document.getElementById(href.slice(i + 1))?.scrollIntoView({ behavior: "smooth", block: "start" });
       history.pushState(null, "", href);
       setOpen(false);
     } else if (href === "/") {
@@ -66,73 +65,28 @@ export default function Navbar() {
   return (
     <header
       style={{ "--delay": "0s" } as React.CSSProperties}
-      className="animate-slide-down fixed inset-x-0 top-0 z-50 px-3 pt-3 sm:px-4"
+      className="animate-slide-down fixed inset-x-0 top-0 z-50 px-3 pt-3 sm:px-5 sm:pt-4"
     >
       <nav
-        className={`mx-auto flex max-w-6xl items-center justify-between rounded-full border py-2 pl-2 pr-3 transition-all duration-500 ${
+        className={`mx-auto flex max-w-6xl items-center justify-between gap-4 rounded-full border py-2 pl-4 pr-2 transition-all duration-500 ${
           scrolled || open ? "sc-nav-glass" : "border-transparent"
         }`}
       >
-        <Link
-          href="/"
-          onClick={(e) => handleClick(e, "/")}
-          className="sc-logo-pill flex h-11 items-center rounded-full bg-white/90 px-4 shadow-sm ring-1 ring-white/60"
-        >
+        <Link href="/" onClick={(e) => handleClick(e, "/")} aria-label="Smartcard — нүүр" className="sc-logo-pill flex h-10 shrink-0 items-center">
           {/* Харанхуй горимд цагаан лого руу солигдоно (globals.css: .sc-logo-*) */}
           <Image src="/logo/smartcard-color.png" alt="Smartcard" width={640} height={139} priority className="sc-logo-light h-8 w-auto" />
-          {/* Цагаан лого tagline-гүй тул "Smartcard" үсгийн хэмжээ ижил байхаар намхан */}
-          <Image src="/logo/smartcard-white.png" alt="" aria-hidden width={640} height={92} priority className="sc-logo-dark h-[21px] w-auto" />
+          <Image src="/logo/smartcard-white.png" alt="" aria-hidden width={640} height={92} priority className="sc-logo-dark h-[22px] w-auto" />
         </Link>
 
-        <div className="flex items-center gap-3">
-          {/* Компьютер дээрх цэс */}
-          <ul className="hidden items-center gap-6 lg:flex">
-            {links.map((link) => (
-              <li key={link.href}>
-                <Link
-                  href={link.href}
-                  onClick={(e) => handleClick(e, link.href)}
-                  className={`group relative text-sm font-medium transition hover:text-[var(--fg)] ${
-                    isActive(link.href) ? "u-fg" : "u-soft"
-                  }`}
-                >
-                  {link.label}
-                  <span
-                    className={`absolute -bottom-1 left-0 h-0.5 bg-[var(--accent)] transition-all duration-300 group-hover:w-full ${
-                      isActive(link.href) ? "w-full" : "w-0"
-                    }`}
-                  />
-                </Link>
-              </li>
-            ))}
-          </ul>
-
-          <ThemeToggle />
-
-          {/* Утасны цэсний товч */}
-          <button
-            onClick={() => setOpen(!open)}
-            aria-label="Цэс нээх"
-            aria-expanded={open}
-            className="flex h-10 w-10 flex-col items-center justify-center gap-1.5 lg:hidden"
-          >
-            <span className={`h-0.5 w-6 bg-[var(--fg)] transition duration-300 ${open ? "translate-y-2 rotate-45" : ""}`} />
-            <span className={`h-0.5 w-6 bg-[var(--fg)] transition duration-300 ${open ? "opacity-0" : ""}`} />
-            <span className={`h-0.5 w-6 bg-[var(--fg)] transition duration-300 ${open ? "-translate-y-2 -rotate-45" : ""}`} />
-          </button>
-        </div>
-      </nav>
-
-      {/* Утасны цэс */}
-      {open && (
-        <ul className="sc-nav-glass mx-auto mt-2 flex max-w-6xl flex-col gap-1 rounded-3xl p-3 lg:hidden">
+        {/* Компьютер дээрх цэс */}
+        <ul className="hidden items-center gap-1 lg:flex">
           {links.map((link) => (
             <li key={link.href}>
               <Link
                 href={link.href}
                 onClick={(e) => handleClick(e, link.href)}
-                className={`block rounded-2xl px-4 py-3 transition hover:bg-[var(--glass-bg)] ${
-                  isActive(link.href) ? "u-fg bg-[var(--glass-bg)]" : "u-soft"
+                className={`rounded-full px-4 py-2 text-sm font-medium transition hover:bg-[var(--surface-2)] hover:text-[var(--fg)] ${
+                  isActive(link.href) ? "u-fg bg-[var(--surface-2)]" : "u-soft"
                 }`}
               >
                 {link.label}
@@ -140,6 +94,48 @@ export default function Navbar() {
             </li>
           ))}
         </ul>
+
+        <div className="flex items-center gap-1.5">
+          <ThemeToggle />
+          <Link
+            href="/#contact"
+            onClick={(e) => handleClick(e, "/#contact")}
+            className="sc-btn sc-btn-primary hidden !px-5 !py-2.5 text-sm sm:inline-flex"
+          >
+            Холбогдох <ArrowUpRight className="h-4 w-4" />
+          </Link>
+
+          {/* Утасны цэсний товч */}
+          <button
+            onClick={() => setOpen(!open)}
+            aria-label={open ? "Цэс хаах" : "Цэс нээх"}
+            aria-expanded={open}
+            className="flex h-10 w-10 flex-col items-center justify-center gap-1.5 rounded-full lg:hidden"
+          >
+            <span className={`h-0.5 w-5 bg-[var(--fg)] transition duration-300 ${open ? "translate-y-1 rotate-45" : ""}`} />
+            <span className={`h-0.5 w-5 bg-[var(--fg)] transition duration-300 ${open ? "-translate-y-1 -rotate-45" : ""}`} />
+          </button>
+        </div>
+      </nav>
+
+      {/* Утасны цэс */}
+      {open && (
+        <div className="sc-nav-glass animate-fade-up mx-auto mt-2 max-w-6xl rounded-3xl p-3 lg:hidden" style={{ "--delay": "0s" } as React.CSSProperties}>
+          <ul className="flex flex-col">
+            {[{ href: "/", label: "Нүүр" }, ...links, { href: "/#contact", label: "Холбоо барих" }].map((link, i) => (
+              <li key={link.href}>
+                <Link
+                  href={link.href}
+                  onClick={(e) => handleClick(e, link.href)}
+                  className="font-display flex items-center justify-between rounded-2xl px-4 py-3.5 text-xl transition hover:bg-[var(--surface-2)]"
+                >
+                  {link.label}
+                  <span className="u-mute font-mono text-xs">{String(i + 1).padStart(2, "0")}</span>
+                </Link>
+              </li>
+            ))}
+          </ul>
+        </div>
       )}
     </header>
   );

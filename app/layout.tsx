@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { Suspense } from "react";
 import Script from "next/script";
-import { Geist, Geist_Mono } from "next/font/google";
+import { Geist, Geist_Mono, Unbounded } from "next/font/google";
 import "./globals.css";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
@@ -10,6 +10,7 @@ import ScrollToTop from "@/components/ScrollToTop";
 import ScrollProgress from "@/components/ScrollProgress";
 import ChatWidget from "@/components/ChatWidget";
 import Ambient from "@/components/Ambient";
+import Spotlight from "@/components/Spotlight";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -19,6 +20,13 @@ const geistSans = Geist({
 const geistMono = Geist_Mono({
   variable: "--font-geist-mono",
   subsets: ["latin", "cyrillic"],
+});
+
+// Гарчгийн өргөн, хүчтэй фонт
+const unbounded = Unbounded({
+  variable: "--font-unbounded",
+  subsets: ["latin", "cyrillic"],
+  weight: ["400", "500", "600", "700"],
 });
 
 export const metadata: Metadata = {
@@ -33,13 +41,14 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="mn" suppressHydrationWarning>
+    <html lang="mn" className="dark" suppressHydrationWarning>
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+        className={`${geistSans.variable} ${geistMono.variable} ${unbounded.variable} antialiased`}
       >
         <Ambient />
         <Script id="theme-init" strategy="beforeInteractive">
-          {`try{if(localStorage.getItem("theme")==="dark")document.documentElement.classList.add("dark")}catch(e){}`}
+          {/* Харанхуй горим анхдагч; хэрэглэгч цайвар сонгосон бол л цайвар */}
+          {`try{document.documentElement.classList.toggle("dark",localStorage.getItem("theme")!=="light")}catch(e){}`}
         </Script>
         <Suspense fallback={null}>
           <Navbar />
@@ -52,6 +61,7 @@ export default function RootLayout({
         <ScrollToTop />
         <ScrollProgress />
         <ChatWidget />
+        <Spotlight />
       </body>
     </html>
   );

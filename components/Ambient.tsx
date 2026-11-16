@@ -1,11 +1,10 @@
-// Бүх хуудасны ард аажуухан хөвөх өнгөт гэрэл. Шилэн карт, товчнууд үүнийг бүдгэрүүлж харуулна.
+// Бүх хуудасны ард: дээрээс тусах туйлын туяа, нарийн тор, кино шиг ширхэг (globals.css: .sc-ambient)
 export default function Ambient() {
   return (
     <div className="sc-ambient" aria-hidden="true">
-      <span className="o1" />
-      <span className="o2" />
-      <span className="o3" />
-      <span className="o4" />
+      <span className="aurora" />
+      <span className="grid" />
+      <span className="grain" />
     </div>
   );
 }
