@@ -19,6 +19,29 @@ export default function ChatWidget() {
   const [busy, setBusy] = useState(false);
   const listRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLTextAreaElement>(null);
+  const panelRef = useRef<HTMLDivElement>(null);
+  const fabRef = useRef<HTMLButtonElement>(null);
+
+  // Чатын гадна дарах эсвэл Esc товч дарахад хаагдана (X дарах шаардлагагүй)
+  useEffect(() => {
+    if (!open) return;
+    const onPointerDown = (e: PointerEvent) => {
+      const t = e.target as Node;
+      if (panelRef.current?.contains(t) || fabRef.current?.contains(t)) return;
+      setOpen(false);
+    };
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key !== "Escape") return;
+      setOpen(false);
+      fabRef.current?.focus();
+    };
+    document.addEventListener("pointerdown", onPointerDown);
+    document.addEventListener("keydown", onKey);
+    return () => {
+      document.removeEventListener("pointerdown", onPointerDown);
+      document.removeEventListener("keydown", onKey);
+    };
+  }, [open]);
 
   useEffect(() => {
     listRef.current?.scrollTo({ top: listRef.current.scrollHeight });
@@ -73,6 +96,7 @@ export default function ChatWidget() {
   return (
     <>
       <button
+        ref={fabRef}
         onClick={() => setOpen((o) => !o)}
         aria-label={open ? "Чатыг хаах" : "AI туслахтай чатлах"}
         aria-expanded={open}
@@ -83,6 +107,7 @@ export default function ChatWidget() {
 
       {open && (
         <div
+          ref={panelRef}
           role="dialog"
           aria-label="Smartcard AI туслах"
           className="fixed bottom-24 right-4 z-50 flex h-[min(560px,calc(100dvh-8rem))] w-[calc(100vw-2rem)] max-w-sm flex-col sc-nav-glass overflow-hidden rounded-3xl text-[var(--fg)] sm:right-6"
