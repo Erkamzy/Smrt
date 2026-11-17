@@ -40,7 +40,7 @@ const photo = (path: string) => {
 
 const stats: { text?: string; to?: number; suffix?: string; label: string }[] = [
   { text: String(company.founded), label: "Байгуулагдсан он" },
-  { to: 25, suffix: "+", label: "Жилийн туршлага" },
+  { to: 28, suffix: "+", label: "Жилийн туршлага" },
   { to: 6, label: "Мэргэшсэн салбар" },
   { to: 20, suffix: "+", label: "Жил олон улсын түнш" },
 ];
