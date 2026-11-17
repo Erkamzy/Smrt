@@ -8,7 +8,7 @@ export const metadata = { title: "Бидний тухай | Смарткарт" 
 
 const stats = [
   { text: String(company.founded), label: "Байгуулагдсан он" },
-  { to: 25, suffix: "+", label: "Жилийн туршлага" },
+  { to: 28, suffix: "+", label: "Жилийн туршлага" },
   { to: 6, label: "Мэргэшсэн салбар" },
 ] as { text?: string; to?: number; suffix?: string; label: string }[];
 
