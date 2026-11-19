@@ -1,8 +1,38 @@
 /* eslint-disable @next/next/no-img-element -- зургууд smrt.mn-ээс шууд ачаалагдана */
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { ArrowUpRight, Check, ChevronRight } from "lucide-react";
+import { ArrowUpRight, Check, ChevronRight, MonitorPlay } from "lucide-react";
+import { ledSite } from "@/lib/content";
 import { breadcrumbs, childrenOf, getPage, groupBlocks, preview, type Block } from "@/lib/pages";
+
+// LED шийдлийн хуудсанд: бүтээгдэхүүн, үнийн санал авах сайт руу тод холбоос
+function LedSiteCta() {
+  return (
+    <section className="sc-promo relative mt-14 rounded-[2rem] p-[2px]">
+      <div className="flex flex-col gap-6 rounded-[calc(2rem-2px)] bg-[var(--bg)] p-8 sm:flex-row sm:items-center sm:justify-between sm:p-10">
+        <div className="flex items-start gap-5">
+          <span className="flex h-14 w-14 shrink-0 items-center justify-center rounded-2xl bg-gradient-to-br from-[var(--accent-strong)] to-[var(--accent-2)] text-white">
+            <MonitorPlay className="h-7 w-7" strokeWidth={1.6} />
+          </span>
+          <div>
+            <h2 className="text-2xl font-bold sm:text-3xl">LED дэлгэцийн үнэ судлах</h2>
+            <p className="u-soft mt-2 max-w-md leading-relaxed">
+              Дотор, гадна LED дэлгэц, модуль болон бусад тоног төхөөрөмжийг үзэж, хэмжээ, тоо ширхэгээ оруулан үнийн санал аваарай.
+            </p>
+          </div>
+        </div>
+        <div className="flex shrink-0 flex-col gap-2 sm:items-end">
+          <a href={ledSite.quoteHref} target="_blank" rel="noopener noreferrer" className="sc-btn sc-btn-primary">
+            Үнийн санал авах <ArrowUpRight className="h-4 w-4" />
+          </a>
+          <a href={ledSite.href} target="_blank" rel="noopener noreferrer" className="u-soft text-sm hover:text-[var(--fg)]">
+            Бүтээгдэхүүн үзэх →
+          </a>
+        </div>
+      </div>
+    </section>
+  );
+}
 
 function BlockView({ b }: { b: Block }) {
   switch (b.t) {
@@ -133,6 +163,8 @@ export default function ContentPage({ path }: { path: string }) {
         ) : (
           <h1 className="animate-fade-up mt-4 text-4xl font-extrabold tracking-tight sm:text-5xl">{page.title}</h1>
         )}
+
+        {page.path === "/solution/led-display" && <LedSiteCta />}
 
         <div className="mt-10">
           <Blocks blocks={blocks} />

@@ -80,3 +80,8 @@ export const localPartners: { name: string; logo: string }[] = [
   { name: "Чингис Хаан банк", logo: "/partners/mn/chinggis-khaan-bank.png" },
   { name: "М банк", logo: "/partners/mn/m-bank.png" },
 ];
+// LED дэлгэцийн бүтээгдэхүүн, үнийн санал авах тусдаа сайт
+export const ledSite = {
+  href: "https://led-mongolia.vercel.app/",
+  quoteHref: "https://led-mongolia.vercel.app/#quote",
+};
