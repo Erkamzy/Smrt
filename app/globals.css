@@ -69,7 +69,7 @@ html.dark {
 @theme inline {
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
-  --font-display: var(--font-unbounded);
+  --font-display: var(--font-display-face);
 }
 
 html {
@@ -86,12 +86,13 @@ body {
 
 section[id] { scroll-margin-top: 6rem; }
 
-/* Бүх хуудасны гарчиг өргөн фонтоор (класс өгсөн бол түүгээрээ дарагдана) */
+/* Бүх хуудасны гарчиг display фонтоор (класс өгсөн бол түүгээрээ дарагдана) */
 @layer base {
   main h1,
   main h2 {
-    font-family: var(--font-unbounded), var(--font-geist-sans), sans-serif;
-    letter-spacing: -0.02em;
+    font-family: var(--font-display-face), var(--font-geist-sans), sans-serif;
+    letter-spacing: -0.03em;
+    line-height: 1.12;
   }
   main h1.font-extrabold,
   main h2.font-extrabold { font-weight: 600; }
@@ -107,8 +108,9 @@ section[id] { scroll-margin-top: 6rem; }
 @layer components {
   /* Гарчгийн фонт */
   .font-display {
-    font-family: var(--font-unbounded), var(--font-geist-sans), sans-serif;
-    letter-spacing: -0.02em;
+    font-family: var(--font-display-face), var(--font-geist-sans), sans-serif;
+    letter-spacing: -0.03em;
+    line-height: 1.12;
   }
 
   /* Карт: тунгалаг биш гадаргуу, нимгэн хүрээ, хулгана дагах гэрэл (components/Spotlight.tsx) */

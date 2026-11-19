@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { Suspense } from "react";
 import Script from "next/script";
-import { Geist, Geist_Mono, Unbounded } from "next/font/google";
+import { Geist, Geist_Mono, Manrope } from "next/font/google";
 import "./globals.css";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
@@ -22,9 +22,9 @@ const geistMono = Geist_Mono({
   subsets: ["latin", "cyrillic"],
 });
 
-// Гарчгийн өргөн, хүчтэй фонт
-const unbounded = Unbounded({
-  variable: "--font-unbounded",
+// Гарчгийн уян хатан, цэвэрхэн фонт
+const display = Manrope({
+  variable: "--font-display-face",
   subsets: ["latin", "cyrillic"],
   weight: ["400", "500", "600", "700"],
 });
@@ -43,7 +43,7 @@ export default function RootLayout({
   return (
     <html lang="mn" className="dark" suppressHydrationWarning>
       <body
-        className={`${geistSans.variable} ${geistMono.variable} ${unbounded.variable} antialiased`}
+        className={`${geistSans.variable} ${geistMono.variable} ${display.variable} antialiased`}
       >
         <Ambient />
         <Script id="theme-init" strategy="beforeInteractive">
