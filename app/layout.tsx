@@ -62,7 +62,9 @@ export default function RootLayout({
         <ScrollToTop />
         <ScrollProgress />
         <ChatWidget />
-        <LedPromo />
+        <Suspense fallback={null}>
+          <LedPromo />
+        </Suspense>
         <Spotlight />
       </body>
     </html>
