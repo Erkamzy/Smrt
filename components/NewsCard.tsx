@@ -46,7 +46,7 @@ export default function NewsCard({
     </article>
   );
 
-  if (url) {
+  if (url) { 
     return (
       <a
         href={url}
