@@ -354,6 +354,13 @@ section[id] { scroll-margin-top: 6rem; }
   .sc-marquee[data-reverse] .sc-marquee-track { animation-direction: reverse; }
   .sc-marquee:hover .sc-marquee-track { animation-play-state: paused; }
 
+  /* LED сайтын гэрэлтэх товч: эргэлдэх градиент хүрээ */
+  .sc-promo {
+    background: conic-gradient(from var(--sc-angle, 0deg), var(--accent-strong), var(--accent-2), #34d399, var(--accent-strong));
+    box-shadow: 0 10px 40px -10px color-mix(in srgb, var(--accent-2) 70%, transparent);
+    animation: sc-promo-spin 4s linear infinite;
+  }
+
   /* Анивчих цэг */
   .sc-pulse { position: relative; }
   .sc-pulse::after {
@@ -494,6 +501,8 @@ html.dark .sc-ambient .grain { opacity: 0.06; }
 
 @keyframes sc-spin { to { transform: rotate(360deg); } }
 @keyframes sc-marquee { to { transform: translateX(-50%); } }
+@property --sc-angle { syntax: "<angle>"; initial-value: 0deg; inherits: false; }
+@keyframes sc-promo-spin { to { --sc-angle: 360deg; } }
 @keyframes sc-ping { 75%, 100% { transform: scale(2.6); opacity: 0; } }
 @keyframes sc-breathe { to { transform: translateX(-50%) scale(1.12); opacity: 0.9; } }
 
@@ -504,6 +513,7 @@ html.dark .sc-ambient .grain { opacity: 0.06; }
   .sc-float,
   .sc-halo,
   .sc-pulse::after,
+  .sc-promo,
   .sc-ambient .aurora { animation: none; }
   .text-gradient { background-size: 100% auto; }
   .sc-marquee-track { animation: none; flex-wrap: wrap; width: auto; justify-content: center; row-gap: 1rem; }

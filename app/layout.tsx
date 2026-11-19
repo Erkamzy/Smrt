@@ -9,6 +9,7 @@ import HashScroll from "@/components/HashScroll";
 import ScrollToTop from "@/components/ScrollToTop";
 import ScrollProgress from "@/components/ScrollProgress";
 import ChatWidget from "@/components/ChatWidget";
+import LedPromo from "@/components/LedPromo";
 import Ambient from "@/components/Ambient";
 import Spotlight from "@/components/Spotlight";
 
@@ -61,6 +62,7 @@ export default function RootLayout({
         <ScrollToTop />
         <ScrollProgress />
         <ChatWidget />
+        <LedPromo />
         <Spotlight />
       </body>
     </html>

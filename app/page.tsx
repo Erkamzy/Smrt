@@ -15,6 +15,7 @@ import {
   Lightbulb,
   Mail,
   MessagesSquare,
+  MonitorPlay,
   Mountain,
   Phone,
   RadioTower,
@@ -66,6 +67,13 @@ const solutions: { Icon: LucideIcon; title: string; text: string; href: string; 
     text: "Банкны хамгаалалтын хаалга, өрөөнөөс эхлээд камерын систем хүртэл — UL 608 стандартад нийцсэн, эд хөрөнгийг найдвартай хамгаалах шийдэл.",
     href: "/solution/physical-security",
     chips: ["Хамгаалалтын хаалга", "Хадгаламжийн хайрцаг", "Камерын систем"],
+  },
+  {
+    Icon: MonitorPlay,
+    title: "Хурлын танхимын LED дэлгэц",
+    text: "Проектор, олон зурагтын оронд хурал, зөвлөгөөний танхимд заадасгүй, тод LED дэлгэц суурилуулж, видео хурлын системтэй нэгтгэнэ.",
+    href: "/solution/led-display",
+    chips: ["Хурлын өрөө", "Зөвлөгөөний танхим", "Видео хурал", "Засвар үйлчилгээ"],
   },
 ];
 

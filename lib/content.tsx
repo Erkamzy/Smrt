@@ -36,6 +36,13 @@ export const solutions = [
     href: "/solution/physical-security",
     items: [],
   },
+  {
+    icon: "🖥️",
+    title: "Хурлын танхимын LED дэлгэц",
+    text: "Хурал, зөвлөгөөний танхимд проекторын оронд LED дэлгэц суурилуулах үйлчилгээ",
+    href: "/solution/led-display",
+    items: ["Хурлын өрөө", "Зөвлөгөөний танхим", "Видео хурлын интеграци", "Засвар үйлчилгээ"],
+  },
 ];
 
 export const industries = [
@@ -73,3 +80,8 @@ export const localPartners: { name: string; logo: string }[] = [
   { name: "Чингис Хаан банк", logo: "/partners/mn/chinggis-khaan-bank.png" },
   { name: "М банк", logo: "/partners/mn/m-bank.png" },
 ];
+// LED дэлгэцийн бүтээгдэхүүн, үнийн санал авах тусдаа сайт
+export const ledSite = {
+  href: "https://led-mongolia.vercel.app/",
+  quoteHref: "https://led-mongolia.vercel.app/#quote",
+};
