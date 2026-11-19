@@ -36,6 +36,13 @@ export const solutions = [
     href: "/solution/physical-security",
     items: [],
   },
+  {
+    icon: "🖥️",
+    title: "Хурлын танхимын LED дэлгэц",
+    text: "Хурал, зөвлөгөөний танхимд проекторын оронд LED дэлгэц суурилуулах үйлчилгээ",
+    href: "/solution/led-display",
+    items: ["Хурлын өрөө", "Зөвлөгөөний танхим", "Видео хурлын интеграци", "Засвар үйлчилгээ"],
+  },
 ];
 
 export const industries = [
