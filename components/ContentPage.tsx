@@ -10,7 +10,7 @@ function LedSiteCta() {
   return (
     <section className="sc-promo relative mt-14 rounded-[2rem] p-[2px]">
       <div className="flex flex-col gap-6 rounded-[calc(2rem-2px)] bg-[var(--bg)] p-8 sm:flex-row sm:items-center sm:justify-between sm:p-10">
-        <div className="flex items-start gap-5">
+        <div className="flex flex-col items-start gap-4 sm:flex-row sm:gap-5">
           <span className="flex h-14 w-14 shrink-0 items-center justify-center rounded-2xl bg-gradient-to-br from-[var(--accent-strong)] to-[var(--accent-2)] text-white">
             <MonitorPlay className="h-7 w-7" strokeWidth={1.6} />
           </span>
